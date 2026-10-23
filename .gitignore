@@ -1,0 +1,8 @@
+# 嵌套独立 git 仓库：有自己的 gitee 远端，由 commit-to-gitee 技能单独提交
+webproject-xingfeiyang/
+
+# 含 gitee 私人令牌的本地技能配置，禁止入库
+.trae/
+
+# Trae 工具缓存
+.trae-html-share-packages/

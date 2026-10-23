@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>添加新日子</title>
+<script src="images/font_5244147_o2xw7xghiud/iconfont.js"></script>
+<style>
+*{
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+.icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+.topbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:56px;
+    background:#2185d0;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 16px;
+    padding-top:env(safe-area-inset-top);
+    z-index:10;
+}
+.topbar_left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:21px;
+}
+.topbar_left svg{
+    font-size:24px;
+    cursor:pointer;
+}
+.topbar_right{
+    font-size:21px;
+    font-weight:500;
+    cursor:pointer;
+}
+.main{
+    padding-top:calc(56px + env(safe-area-inset-top));
+    background:#f3f3f3;
+    min-height:100vh;
+}
+.card-white,
+.advance-card{
+    width:100%;
+    background:#ffffff;
+    border-radius:0;
+    overflow:hidden;
+}
+.top-gray-bar{
+    height:12px;
+    background:#f3f3f3;
+}
+.form-row{
+    display:flex;
+    align-items:flex-start;
+    padding:13px 16px;
+    gap:14px;
+}
+.card-divider{
+    display:none;
+}
+.form-row .icon{
+    font-size:26px;
+    color:#666;
+    flex-shrink:0;
+    margin-top:3px;
+}
+.form-label{
+    font-size:20px;
+    color:#666666;
+    flex-shrink:0;
+}
+.form-input::placeholder{
+    font-size:20px;
+    color:#777777;
+}
+.form-input{
+    flex:1;
+    border:none;
+    outline:none;
+    font-size:20px;
+    color:#333;
+    background:transparent;
+}
+.form-right-text{
+    color:#2185d0;
+    font-size:19px;
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:4px;
+}
+.switch{
+    width:46px;
+    height:26px;
+    background:#ddd;
+    border-radius:20px;
+    position:relative;
+    margin-left:auto;
+}
+.switch::after{
+    content:"";
+    width:22px;
+    height:22px;
+    background:#fff;
+    border-radius:50%;
+    position:absolute;
+    top:2px;
+    left:2px;
+}
+.gap-space{
+    height:12px;
+    background:#f3f3f3;
+}
+.advance-row{
+    padding:13px 16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+.advance-row .icon{
+    font-size:26px;
+    color:#666;
+    flex-shrink:0;
+    margin-top:0;
+}
+.advance-content{
+    flex:1;
+}
+.advance-title{
+    font-size:19px;
+    color:#222;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+.advance-title span{
+    font-size:19px;
+    background:#fff7cc;
+    padding:2px 6px;
+    border-radius:3px;
+}
+.advance-desc{
+    font-size:16px;
+    color:#777;
+    margin-top:4px;
+}
+.advance-row .icon-arrow{
+    font-size:20px;
+    color:#aaa;
+}
+.save-btn-wrap{
+    padding:18px 16px;
+    background:transparent;
+}
+.save-btn{
+    width:100%;
+    height:54px;
+    background:#2185d0;
+    color:#fff;
+    border:none;
+    border-radius:27px;
+    font-size:21px;
+    font-weight:500;
+}
+.date-row{
+    flex:1;
+}
+.date-top-line{
+    display:flex;
+    align-items:center;
+}
+/* 日期行改为横向同行，公历阴历移到星期五右侧 */
+.date-bottom-line{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:4px;
+    gap:12px;
+}
+.date-value{
+    font-size:22px;
+    color:#2185d0;
+    white-space:nowrap;
+}
+/* 公历阴历：保持原有样式不变，只调整位置 */
+.date-tab{
+    display:flex;
+    align-items:center;
+    gap:0px;
+    background:#e5e7eb;
+    border-radius:6px;
+    padding:2px;
+}
+.date-tab span{
+    padding:3px 10px;
+    font-size:17px;
+    cursor:pointer;
+    border-radius:4px;
+}
+.date-tab span.active{
+    background:#ffffff;
+    color:#2185d0;
+}
+.date-tab span.inactive{
+    background:transparent;
+    color:#666666;
+}
+.tip-text{
+    font-size:14px;
+    color:#999;
+    margin-left:6px;
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+    <div class="topbar_left">
+        <svg class="icon" aria-hidden="true" id="backHome">
+            <use xlink:href="#icon-fanhui"></use>
+        </svg>
+        <span>添加新日子</span>
+    </div>
+    <div class="topbar_right">保存</div>
+</div>
+
+<div class="main">
+    <div class="top-gray-bar"></div>
+
+    <div class="card-white">
+        <div class="form-row">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-a-500904763"></use>
+            </svg>
+            <input class="form-input" placeholder="输入事件名称">
+        </div>
+        <div class="form-row">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-a-500904766"></use>
+            </svg>
+            <div class="date-row">
+                <div class="date-top-line">
+                    <span class="form-label">目标日</span>
+                    <span class="tip-text">(未来日期为倒数，过去日期为正数)</span>
+                </div>
+                <div class="date-bottom-line">
+                    <div class="date-value">2026-10-16 星期五</div>
+                    <div class="date-tab">
+                        <span class="active">公历</span>
+                        <span class="inactive">阴历</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-a-500904764"></use>
+            </svg>
+            <span class="form-label">倒数本</span>
+            <div class="form-right-text">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-a-500908061"></use>
+                </svg>
+                <span>生活</span>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-youjiantou"></use>
+                </svg>
+            </div>
+        </div>
+        <div class="form-row">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-a-500904907"></use>
+            </svg>
+            <span class="form-label">置顶</span>
+            <div class="switch"></div>
+        </div>
+        <div class="form-row">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-a-500904767"></use>
+            </svg>
+            <span class="form-label">重复</span>
+            <span class="form-right-text">不重复
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-youjiantou"></use>
+                </svg>
+            </span>
+        </div>
+    </div>
+
+    <div class="gap-space"></div>
+
+    <div class="advance-card">
+        <div class="advance-row">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-a-500904768"></use>
+            </svg>
+            <div class="advance-content">
+                <div class="advance-title">
+                    <span style="background:#fff7cc;padding:2px 5px;border-radius:3px;">进阶设置</span>
+                </div>
+                <div class="advance-desc">结束日 / 精确时间 / +1 日 / 颜色 / 高亮</div>
+            </div>
+            <svg class="icon icon-arrow" aria-hidden="true">
+                <use xlink:href="#icon-youjiantou"></use>
+            </svg>
+        </div>
+    </div>
+
+    <div class="save-btn-wrap">
+        <button class="save-btn">保存</button>
+    </div>
+</div>
+
+<script>
+document.getElementById('backHome').onclick = function(){
+    location.href = "index.html";
+}
+
+const tabs = document.querySelectorAll('.date-tab span');
+tabs.forEach(item=>{
+    item.onclick = function(){
+        tabs.forEach(i=>{
+            i.classList.remove('active');
+            i.classList.add('inactive');
+        })
+        this.classList.remove('inactive');
+        this.classList.add('active');
+    }
+})
+</script>
+</body>
+</html>

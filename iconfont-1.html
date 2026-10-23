@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>字形标本 第一号 — Font Awesome 字体图标 | XFY 字形研究所</title>
+<!-- Font Awesome 字体图标（本地文件，css 内部相对引用 ../webfonts/） -->
+<link rel="stylesheet" href="cdn/fontawesome/css/all.min.css">
+<style>
+  /* ===== 设计令牌：铸字间（纸墨铅印） ===== */
+  :root{
+    --xfy_paper:#F2F0E9;      /* 冷纸 */
+    --xfy_ink:#22263B;        /* 靛墨 */
+    --xfy_seal:#A63324;       /* 朱砂印泥 */
+    --xfy_lead:#7A7E92;       /* 铅灰 */
+    --xfy_gilt:#B98A2F;       /* 铜金 */
+    --xfy_serif:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun",serif;
+    --xfy_sans:"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--xfy_paper);
+    color:var(--xfy_ink);
+    font-family:var(--xfy_serif);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--xfy_seal);outline-offset:3px;}
+  ::selection{background:var(--xfy_seal);color:var(--xfy_paper);}
+
+  .xfy_wrap{max-width:1120px;margin:0 auto;padding:0 clamp(16px,4vw,48px);}
+
+  /* ===== 页眉：品牌 + 返回首页 ===== */
+  .xfy_top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:26px 0 18px;
+    border-bottom:1px solid var(--xfy_ink);
+    position:relative;
+  }
+  .xfy_top::after{ /* 铅印双线 */
+    content:"";position:absolute;left:0;right:0;bottom:-5px;height:1px;background:var(--xfy_ink);opacity:.45;
+  }
+  .xfy_brand{display:flex;align-items:center;gap:12px;}
+  .xfy_seal{
+    width:38px;height:38px;background:var(--xfy_seal);color:var(--xfy_paper);
+    display:grid;place-items:center;font-size:22px;font-weight:700;line-height:1;
+    transform:rotate(-4deg);box-shadow:2px 2px 0 rgba(34,38,59,.25);
+  }
+  .xfy_brandName{font-size:17px;letter-spacing:.14em;font-weight:700;}
+  .xfy_home{
+    font-family:var(--xfy_sans);font-size:13px;text-decoration:none;
+    border:1px solid var(--xfy_ink);padding:7px 16px;letter-spacing:.2em;
+    transition:background .2s,color .2s;
+  }
+  .xfy_home:hover{background:var(--xfy_ink);color:var(--xfy_paper);}
+
+  /* ===== 首屏：巨型墨印 + 标题重叠 ===== */
+  .xfy_hero{
+    position:relative;
+    display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+    align-items:center;gap:0;
+    padding:clamp(48px,8vw,96px) 0 clamp(40px,6vw,72px);
+  }
+  .xfy_specNo{
+    font-family:var(--xfy_sans);font-size:13px;letter-spacing:.32em;
+    color:var(--xfy_seal);margin-bottom:18px;
+  }
+  .xfy_title{
+    font-size:clamp(40px,6.4vw,76px);font-weight:900;line-height:1.14;
+    letter-spacing:.04em;
+  }
+  .xfy_stamp{ /* 盖在标题旁的朱砂小印 */
+    display:inline-grid;place-items:center;
+    width:1.5em;height:1.5em;font-size:clamp(18px,2vw,26px);font-weight:700;
+    border:3px solid var(--xfy_seal);color:var(--xfy_seal);
+    transform:rotate(8deg) translateY(-.35em);margin-left:.28em;vertical-align:middle;
+  }
+  .xfy_lede{
+    max-width:34em;margin-top:26px;font-size:clamp(15px,1.5vw,17px);
+    color:var(--xfy_ink);
+  }
+  .xfy_lede code{
+    font-family:Consolas,monospace;font-size:.86em;
+    background:rgba(34,38,59,.08);padding:2px 7px;
+  }
+  .xfy_facts{
+    display:flex;flex-wrap:wrap;gap:0;margin-top:34px;
+    border-top:1px solid var(--xfy_ink);border-bottom:1px solid var(--xfy_ink);
+  }
+  .xfy_facts>div{
+    padding:12px 22px 12px 0;margin-right:22px;
+    border-right:1px solid rgba(34,38,59,.28);
+  }
+  .xfy_facts>div:last-child{border-right:none;}
+  .xfy_facts dt{font-family:var(--xfy_sans);font-size:11px;letter-spacing:.3em;color:var(--xfy_lead);}
+  .xfy_facts dd{font-size:15px;font-weight:700;margin-top:2px;}
+  .xfy_heroIcon{
+    justify-self:end;
+    font-size:clamp(180px,26vw,330px);line-height:1;color:var(--xfy_ink);
+    margin-right:-.08em;
+    text-shadow:4px 4px 0 rgba(166,51,36,.22), -2px -2px 0 rgba(242,240,233,.9);
+    animation:xfy_press .7s cubic-bezier(.2,.9,.3,1.1) both;
+  }
+  @keyframes xfy_press{
+    from{opacity:0;transform:scale(1.12) rotate(2deg);}
+    to{opacity:1;transform:scale(1) rotate(0deg);}
+  }
+
+  /* ===== 字盘：墨缝分区网格 ===== */
+  .xfy_caseTitle{
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin-bottom:14px;
+  }
+  .xfy_caseTitle h2{font-size:clamp(22px,2.6vw,30px);letter-spacing:.1em;}
+  .xfy_caseTitle p{font-family:var(--xfy_sans);font-size:12px;letter-spacing:.2em;color:var(--xfy_lead);}
+  .xfy_case{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(148px,1fr));
+    gap:1px;background:var(--xfy_ink); /* 墨缝 */
+    border:1px solid var(--xfy_ink);
+  }
+  .xfy_caseRow{
+    grid-column:1/-1;
+    background:var(--xfy_ink);color:var(--xfy_paper);
+    font-size:14px;letter-spacing:.5em;padding:9px 18px 9px 22px;
+  }
+  .xfy_cell{
+    background:var(--xfy_paper);border:none;cursor:pointer;
+    aspect-ratio:1/1;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+    font-family:var(--xfy_sans);
+    transition:transform .12s ease;
+    position:relative;
+  }
+  .xfy_cell i{font-size:30px;color:var(--xfy_ink);transition:color .15s;}
+  .xfy_cellName{font-size:12.5px;letter-spacing:.14em;color:var(--xfy_lead);}
+  .xfy_cell:hover{transform:translateY(2px);}
+  .xfy_cell:hover i{
+    color:var(--xfy_seal);
+    text-shadow:1px 1px 0 rgba(34,38,59,.35), -1px -1px 0 rgba(242,240,233,.95); /* 盖印回墨 */
+  }
+  .xfy_cell:hover .xfy_cellName{color:var(--xfy_ink);}
+  .xfy_cellBig{grid-column:span 2;grid-row:span 2;aspect-ratio:auto;}
+  .xfy_cellBig i{font-size:76px;}
+  .xfy_cellBig .xfy_cellName{font-size:14px;}
+  .xfy_cell::after{ /* 活字尾部刻痕 */
+    content:"";position:absolute;right:7px;bottom:7px;
+    width:5px;height:5px;background:rgba(34,38,59,.18);
+  }
+
+  /* ===== 用法：墨条 ===== */
+  .xfy_usage{
+    margin:clamp(44px,6vw,72px) 0 0;
+    background:var(--xfy_ink);color:var(--xfy_paper);
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);
+    gap:0;
+  }
+  .xfy_usageNote{padding:clamp(24px,3.5vw,44px);border-right:1px solid rgba(242,240,233,.25);}
+  .xfy_usageNote h3{font-size:20px;letter-spacing:.12em;margin-bottom:12px;}
+  .xfy_usageNote p{font-family:var(--xfy_sans);font-size:13.5px;line-height:1.9;color:rgba(242,240,233,.75);}
+  .xfy_code{padding:clamp(24px,3.5vw,44px);display:flex;flex-direction:column;justify-content:center;gap:10px;}
+  .xfy_code pre{
+    font-family:Consolas,"Courier New",monospace;font-size:clamp(13px,1.4vw,15px);
+    line-height:1.9;color:#E8D9A8;overflow-x:auto;
+  }
+  .xfy_code .xfy_tag{color:#8FA6D9;}
+
+  /* ===== 版记 ===== */
+  .xfy_colophon{
+    margin-top:clamp(44px,6vw,72px);
+    padding:22px 0 40px;border-top:1px solid var(--xfy_ink);
+    display:flex;flex-wrap:wrap;gap:12px 32px;align-items:baseline;justify-content:space-between;
+    font-family:var(--xfy_sans);font-size:12.5px;color:var(--xfy_lead);letter-spacing:.12em;
+  }
+  .xfy_colophon a{color:var(--xfy_seal);text-decoration:none;border-bottom:1px solid currentColor;}
+  .xfy_colophon a:hover{color:var(--xfy_ink);}
+
+  /* ===== 复制提示 ===== */
+  .xfy_toast{
+    position:fixed;left:50%;bottom:34px;transform:translate(-50%,16px);
+    background:var(--xfy_ink);color:var(--xfy_paper);
+    font-family:var(--xfy_sans);font-size:13.5px;letter-spacing:.16em;
+    padding:11px 26px;opacity:0;pointer-events:none;
+    transition:opacity .25s,transform .25s;
+    box-shadow:4px 4px 0 rgba(166,51,36,.55);
+  }
+  .xfy_toast.xfy_show{opacity:1;transform:translate(-50%,0);}
+
+  /* ===== 响应式 ===== */
+  @media (max-width:760px){
+    .xfy_hero{grid-template-columns:1fr;}
+    .xfy_heroIcon{justify-self:start;font-size:clamp(140px,38vw,220px);order:-1;margin:0 0 8px;}
+    .xfy_usage{grid-template-columns:1fr;}
+    .xfy_usageNote{border-right:none;border-bottom:1px solid rgba(242,240,233,.25);}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .xfy_heroIcon{animation:none;}
+    html{scroll-behavior:auto;}
+    .xfy_cell,.xfy_home{transition:none;}
+  }
+</style>
+</head>
+<body>
+<div class="xfy_wrap">
+
+  <header class="xfy_top">
+    <div class="xfy_brand">
+      <span class="xfy_seal" aria-hidden="true">飞</span>
+      <span class="xfy_brandName">XFY 字形研究所</span>
+    </div>
+    <a class="xfy_home" href="index.html">返回首页</a>
+  </header>
+
+  <section class="xfy_hero">
+    <div>
+      <p class="xfy_specNo">标本编号 XFY-001</p>
+      <h1 class="xfy_title">铅字盘上的图形<span class="xfy_stamp" aria-hidden="true">铸</span></h1>
+      <p class="xfy_lede">
+        Font Awesome 把两千多个图形铸进一套字体。文字怎么排，图标就怎么跟——放大不失真，换色只改一处样式。
+        调用一个 <code>&lt;i&gt;</code> 标签，图形便落在版面上，如同检字上盘。
+      </p>
+      <dl class="xfy_facts">
+        <div><dt>工艺</dt><dd>字体图标（icon font）</dd></div>
+        <div><dt>铸料</dt><dd>本地字体文件 + 样式表</dd></div>
+        <div><dt>检字</dt><dd>&lt;i class="fa-solid"&gt;</dd></div>
+      </dl>
+    </div>
+    <i class="fa-solid fa-font-awesome xfy_heroIcon" aria-hidden="true"></i>
+  </section>
+
+  <div class="xfy_caseTitle">
+    <h2>活字字盘</h2>
+    <p>点击任意字模，复制它的写法</p>
+  </div>
+
+  <main class="xfy_case" aria-label="Font Awesome 图标字盘">
+    <div class="xfy_caseRow">符号</div>
+    <button class="xfy_cell xfy_cellBig" data-xfy-code='<i class="fa-solid fa-font-awesome"></i>'>
+      <i class="fa-solid fa-font-awesome" aria-hidden="true"></i><span class="xfy_cellName">标志</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-star"></i>'>
+      <i class="fa-solid fa-star" aria-hidden="true"></i><span class="xfy_cellName">星标</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-heart"></i>'>
+      <i class="fa-solid fa-heart" aria-hidden="true"></i><span class="xfy_cellName">喜好</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-bolt"></i>'>
+      <i class="fa-solid fa-bolt" aria-hidden="true"></i><span class="xfy_cellName">闪电</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-fire"></i>'>
+      <i class="fa-solid fa-fire" aria-hidden="true"></i><span class="xfy_cellName">热度</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-gem"></i>'>
+      <i class="fa-solid fa-gem" aria-hidden="true"></i><span class="xfy_cellName">宝石</span>
+    </button>
+
+    <div class="xfy_caseRow">生活</div>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-coffee"></i>'>
+      <i class="fa-solid fa-coffee" aria-hidden="true"></i><span class="xfy_cellName">咖啡</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-camera"></i>'>
+      <i class="fa-solid fa-camera" aria-hidden="true"></i><span class="xfy_cellName">相机</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-music"></i>'>
+      <i class="fa-solid fa-music" aria-hidden="true"></i><span class="xfy_cellName">音乐</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-utensils"></i>'>
+      <i class="fa-solid fa-utensils" aria-hidden="true"></i><span class="xfy_cellName">餐食</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-gamepad"></i>'>
+      <i class="fa-solid fa-gamepad" aria-hidden="true"></i><span class="xfy_cellName">游戏</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-mug-hot"></i>'>
+      <i class="fa-solid fa-mug-hot" aria-hidden="true"></i><span class="xfy_cellName">热茶</span>
+    </button>
+
+    <div class="xfy_caseRow">自然</div>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-leaf"></i>'>
+      <i class="fa-solid fa-leaf" aria-hidden="true"></i><span class="xfy_cellName">叶</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-feather"></i>'>
+      <i class="fa-solid fa-feather" aria-hidden="true"></i><span class="xfy_cellName">羽</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-moon"></i>'>
+      <i class="fa-solid fa-moon" aria-hidden="true"></i><span class="xfy_cellName">月</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-sun"></i>'>
+      <i class="fa-solid fa-sun" aria-hidden="true"></i><span class="xfy_cellName">日</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-snowflake"></i>'>
+      <i class="fa-solid fa-snowflake" aria-hidden="true"></i><span class="xfy_cellName">雪</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-seedling"></i>'>
+      <i class="fa-solid fa-seedling" aria-hidden="true"></i><span class="xfy_cellName">幼苗</span>
+    </button>
+
+    <div class="xfy_caseRow">工具</div>
+    <button class="xfy_cell xfy_cellBig" data-xfy-code='<i class="fa-solid fa-pen-nib"></i>'>
+      <i class="fa-solid fa-pen-nib" aria-hidden="true"></i><span class="xfy_cellName">笔尖</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-compass"></i>'>
+      <i class="fa-solid fa-compass" aria-hidden="true"></i><span class="xfy_cellName">罗盘</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-anchor"></i>'>
+      <i class="fa-solid fa-anchor" aria-hidden="true"></i><span class="xfy_cellName">锚</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-palette"></i>'>
+      <i class="fa-solid fa-palette" aria-hidden="true"></i><span class="xfy_cellName">调色</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-ruler-combined"></i>'>
+      <i class="fa-solid fa-ruler-combined" aria-hidden="true"></i><span class="xfy_cellName">直尺</span>
+    </button>
+    <button class="xfy_cell" data-xfy-code='<i class="fa-solid fa-stamp"></i>'>
+      <i class="fa-solid fa-stamp" aria-hidden="true"></i><span class="xfy_cellName">印章</span>
+    </button>
+  </main>
+
+  <section class="xfy_usage">
+    <div class="xfy_usageNote">
+      <h3>检字法</h3>
+      <p>类名即字形：fa-solid 表示实心字重，后接图标名。字号跟随文字大小，颜色继承文字颜色——把它当作一个汉字来排版即可。</p>
+    </div>
+    <div class="xfy_code">
+      <pre>&lt;<span class="xfy_tag">i</span> class=<span style="color:#E8D9A8">"fa-solid fa-pen-nib"</span>&gt;&lt;/<span class="xfy_tag">i</span>&gt;</pre>
+      <p style="font-family:var(--xfy_sans);font-size:12.5px;color:rgba(242,240,233,.55);letter-spacing:.14em;">
+        本页全部图形由 cdn/fontawesome 下的本地字体文件渲染
+      </p>
+    </div>
+  </section>
+
+  <footer class="xfy_colophon">
+    <span>XFY 字形研究所，铸于二〇二六年秋</span>
+    <span>字盘廿四枚 · 朱砂一印</span>
+    <a href="index.html">返回首页</a>
+  </footer>
+
+</div>
+
+<div class="xfy_toast" id="xfy_toast" role="status" aria-live="polite"></div>
+
+<script>
+  // 所有 JS 变量以 xfy_ 开头
+  const xfy_toast = document.getElementById('xfy_toast');
+  let xfy_toastTimer = null;
+
+  async function xfy_copy(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (e) {
+      const xfy_ta = document.createElement('textarea');
+      xfy_ta.value = text;
+      document.body.appendChild(xfy_ta);
+      xfy_ta.select();
+      document.execCommand('copy');
+      xfy_ta.remove();
+    }
+  }
+
+  function xfy_showToast(msg) {
+    xfy_toast.textContent = msg;
+    xfy_toast.classList.add('xfy_show');
+    clearTimeout(xfy_toastTimer);
+    xfy_toastTimer = setTimeout(() => xfy_toast.classList.remove('xfy_show'), 1600);
+  }
+
+  document.querySelectorAll('.xfy_cell').forEach((xfy_btn) => {
+    xfy_btn.addEventListener('click', () => {
+      const xfy_name = xfy_btn.querySelector('.xfy_cellName').textContent;
+      xfy_copy(xfy_btn.dataset.xfyCode).then(() => {
+        xfy_showToast('已复制「' + xfy_name + '」的写法');
+      });
+    });
+  });
+</script>
+</body>
+</html>

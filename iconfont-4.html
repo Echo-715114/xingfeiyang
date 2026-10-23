@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>图纸 XFY-004 — 移动端下导航（SVG 图标） | XFY 字形研究所</title>
+<!-- iconfont 的 SVG 集合脚本：加载后向页面注入 symbol 定义，用 <use> 引用 -->
+<script src="webproject-xingfeiyang/font/iconfont.js"></script>
+<style>
+  /* ===== 设计令牌：制图室（蓝图，与图纸 002 同族） ===== */
+  :root{
+    --xfy_desk:#0B1D3A;       /* 图板外底色 */
+    --xfy_blueprint:#12294F;  /* 蓝图蓝 */
+    --xfy_line:#E9EFF8;       /* 制图白 */
+    --xfy_accent:#E5C15C;     /* 标注黄 */
+    --xfy_alert:#F0503C;      /* 红点红 */
+    --xfy_sheer:rgba(233,239,248,.04);
+    --xfy_fang:"FangSong","STFangsong","Noto Serif SC",serif;
+    --xfy_hei:"PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    background:var(--xfy_desk);
+    font-family:var(--xfy_fang);color:var(--xfy_line);line-height:1.8;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  :focus-visible{outline:2px dashed var(--xfy_accent);outline-offset:2px;}
+
+  /* ===== 移动端图纸（桌面端居中） ===== */
+  .xfy_screen{
+    position:relative;max-width:480px;margin:0 auto;min-height:100vh;
+    background-color:var(--xfy_blueprint);
+    background-image:
+      linear-gradient(rgba(233,239,248,.13) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(233,239,248,.13) 1px,transparent 1px),
+      linear-gradient(rgba(233,239,248,.055) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(233,239,248,.055) 1px,transparent 1px);
+    background-size:120px 120px,120px 120px,24px 24px,24px 24px;
+    box-shadow:0 0 0 1px rgba(233,239,248,.4),0 18px 60px rgba(0,0,0,.45);
+    display:flex;flex-direction:column;
+  }
+
+  /* ===== 页眉 ===== */
+  .xfy_top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px 12px;border-bottom:1px solid rgba(233,239,248,.5);
+  }
+  .xfy_brand{display:flex;align-items:center;gap:10px;font-family:var(--xfy_hei);font-size:13px;font-weight:700;letter-spacing:.14em;}
+  .xfy_gauge{width:22px;height:22px;border:1.5px solid var(--xfy_accent);display:grid;place-items:center;transform:rotate(45deg);}
+  .xfy_gauge::before{content:"";width:8px;height:8px;background:var(--xfy_accent);}
+  .xfy_home{font-family:var(--xfy_hei);font-size:11.5px;letter-spacing:.14em;text-decoration:none;color:var(--xfy_accent);border-bottom:1px solid currentColor;}
+  .xfy_home:hover{color:var(--xfy_line);}
+
+  /* ===== 标本题记 ===== */
+  .xfy_head{padding:22px 18px 8px;}
+  .xfy_sheetNo{font-family:var(--xfy_hei);font-size:11px;letter-spacing:.3em;color:var(--xfy_accent);}
+  .xfy_title{font-family:var(--xfy_hei);font-size:26px;font-weight:900;letter-spacing:.05em;margin-top:6px;}
+  .xfy_lede{font-size:13.5px;color:rgba(233,239,248,.8);margin-top:8px;max-width:30em;}
+  .xfy_lede b{color:var(--xfy_accent);font-weight:400;border-bottom:1px solid var(--xfy_accent);}
+
+  /* ===== 大样图版 ===== */
+  .xfy_plate{
+    margin:16px 18px 0;border:1px solid rgba(233,239,248,.55);background:var(--xfy_sheer);
+    display:grid;grid-template-columns:1fr 1fr;
+  }
+  .xfy_plateCell{
+    padding:22px 14px 16px;border-right:1px solid rgba(233,239,248,.3);border-bottom:1px solid rgba(233,239,248,.3);
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+  }
+  .xfy_plateCell:nth-child(2n){border-right:none;}
+  .xfy_plateCell:nth-child(n+3){border-bottom:none;}
+  .xfy_icon{fill:currentColor;display:block;}
+  .xfy_plateIcon{width:46px;height:46px;color:var(--xfy_line);}
+  .xfy_plateName{font-size:14px;letter-spacing:.14em;}
+  .xfy_plateMeta{font-family:Consolas,monospace;font-size:10.5px;color:rgba(233,239,248,.55);letter-spacing:0;word-break:break-all;text-align:center;}
+  .xfy_plateMeta b{color:var(--xfy_accent);font-weight:400;}
+
+  /* ===== 说明条 ===== */
+  .xfy_note{
+    margin:16px 18px 0;padding:12px 14px;outline:1px solid rgba(233,239,248,.4);outline-offset:3px;
+    background:rgba(233,239,248,.06);
+    font-family:var(--xfy_hei);font-size:12px;line-height:1.9;letter-spacing:.05em;color:rgba(233,239,248,.85);
+  }
+  .xfy_note b{color:var(--xfy_accent);font-weight:400;}
+
+  .xfy_bodySpace{flex:1;padding-bottom:96px;}
+
+  /* ===== 底部固定导航：宽度自适应，四项均分 ===== */
+  .xfy_tabbar{
+    position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+    width:100%;max-width:480px;
+    display:flex;
+    background:rgba(18,41,79,.92);backdrop-filter:blur(6px);
+    border-top:1px solid rgba(233,239,248,.55);
+    padding-bottom:env(safe-area-inset-bottom);
+    z-index:10;
+  }
+  .xfy_item{
+    flex:1 1 0;min-width:0;               /* 自适应宽度：四项均分 */
+    background:none;border:none;cursor:pointer;
+    font-family:var(--xfy_hei);
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:9px 0 8px;position:relative;color:rgba(233,239,248,.55);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .xfy_item::before{ /* 选中指示：顶部标注黄短线 */
+    content:"";position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+    width:22px;height:2px;background:transparent;transition:background .2s;
+  }
+  .xfy_iconWrap{position:relative;width:26px;height:26px;display:grid;place-items:center;}
+  .xfy_navIcon{width:22px;height:22px;}
+  .xfy_itemLabel{font-size:10.5px;letter-spacing:.12em;}
+  .xfy_item.xfy_active{color:var(--xfy_accent);}
+  .xfy_item.xfy_active::before{background:var(--xfy_accent);}
+  .xfy_item:not(.xfy_active):hover{color:var(--xfy_line);}
+
+  /* ===== 徽章：数字徽章与红点 ===== */
+  .xfy_badge{
+    position:absolute;top:-7px;right:-15px;
+    min-width:17px;height:15px;padding:0 4px;
+    background:var(--xfy_accent);color:var(--xfy_blueprint);
+    font-size:9.5px;font-weight:700;line-height:15px;text-align:center;
+    border-radius:8px;border:1.5px solid var(--xfy_blueprint);
+    font-family:Consolas,monospace;letter-spacing:0;
+  }
+  .xfy_dot{
+    position:absolute;top:-2px;right:-6px;
+    width:8px;height:8px;border-radius:50%;
+    background:var(--xfy_alert);border:1.5px solid var(--xfy_blueprint);
+  }
+
+  /* ===== 动效（一次性升起） ===== */
+  .xfy_tabbar{animation:xfy_rise .45s cubic-bezier(.2,.9,.3,1) both;animation-delay:.15s;}
+  @keyframes xfy_rise{from{transform:translate(-50%,100%);}to{transform:translate(-50%,0);}}
+  @media (prefers-reduced-motion:reduce){.xfy_tabbar{animation:none;}}
+</style>
+</head>
+<body>
+<div class="xfy_screen">
+
+  <header class="xfy_top">
+    <div class="xfy_brand"><span class="xfy_gauge" aria-hidden="true"></span>XFY 字形研究所</div>
+    <a class="xfy_home" href="index.html">返回首页</a>
+  </header>
+
+  <section class="xfy_head">
+    <p class="xfy_sheetNo">图纸编号 XFY-004</p>
+    <h1 class="xfy_title">口袋里的制图</h1>
+    <p class="xfy_lede">
+      同一套图标改用 <b>SVG 绘制</b>：脚本注入符号库，导航里以 <b>&lt;use&gt;</b> 取用。
+      线条即矢量，颜色跟随文字色，任何屏宽都不虚边。
+    </p>
+  </section>
+
+  <div class="xfy_plate" role="table" aria-label="符号取用表">
+    <div class="xfy_plateCell" role="row">
+      <svg class="xfy_icon xfy_plateIcon" aria-hidden="true"><use href="#icon-shouye"></use></svg>
+      <span class="xfy_plateName">首页</span>
+      <span class="xfy_plateMeta">use <b>#icon-shouye</b></span>
+    </div>
+    <div class="xfy_plateCell" role="row">
+      <svg class="xfy_icon xfy_plateIcon" aria-hidden="true"><use href="#icon-shoucang"></use></svg>
+      <span class="xfy_plateName">收藏</span>
+      <span class="xfy_plateMeta">use <b>#icon-shoucang</b></span>
+    </div>
+    <div class="xfy_plateCell" role="row">
+      <svg class="xfy_icon xfy_plateIcon" aria-hidden="true"><use href="#icon-xihuan"></use></svg>
+      <span class="xfy_plateName">喜欢</span>
+      <span class="xfy_plateMeta">use <b>#icon-xihuan</b></span>
+    </div>
+    <div class="xfy_plateCell" role="row">
+      <svg class="xfy_icon xfy_plateIcon" aria-hidden="true"><use href="#icon-wode"></use></svg>
+      <span class="xfy_plateName">我的</span>
+      <span class="xfy_plateMeta">use <b>#icon-wode</b></span>
+    </div>
+  </div>
+
+  <p class="xfy_note">
+    底部导航与标本 003 同构：<b>position:fixed</b> 固定底沿，四项 <b>flex:1</b> 均分自适应宽度。
+    不同在于图标是 <b>&lt;svg&gt;&lt;use&gt;</b> 取自注入的符号库——改尺寸改颜色，都是一次属性赋值。
+  </p>
+
+  <div class="xfy_bodySpace"></div>
+
+  <!-- 底部固定下导航 -->
+  <nav class="xfy_tabbar" aria-label="底部导航">
+    <button class="xfy_item xfy_active" type="button">
+      <span class="xfy_iconWrap">
+        <svg class="xfy_icon xfy_navIcon" aria-hidden="true"><use href="#icon-shouye"></use></svg>
+      </span>
+      <span class="xfy_itemLabel">首页</span>
+    </button>
+    <button class="xfy_item" type="button">
+      <span class="xfy_iconWrap">
+        <svg class="xfy_icon xfy_navIcon" aria-hidden="true"><use href="#icon-shoucang"></use></svg>
+        <span class="xfy_badge" aria-label="99 条以上未读">99+</span>
+      </span>
+      <span class="xfy_itemLabel">收藏</span>
+    </button>
+    <button class="xfy_item" type="button">
+      <span class="xfy_iconWrap">
+        <svg class="xfy_icon xfy_navIcon" aria-hidden="true"><use href="#icon-xihuan"></use></svg>
+        <span class="xfy_dot" aria-label="有更新"></span>
+      </span>
+      <span class="xfy_itemLabel">喜欢</span>
+    </button>
+    <button class="xfy_item" type="button">
+      <span class="xfy_iconWrap">
+        <svg class="xfy_icon xfy_navIcon" aria-hidden="true"><use href="#icon-wode"></use></svg>
+      </span>
+      <span class="xfy_itemLabel">我的</span>
+    </button>
+  </nav>
+
+</div>
+
+<script>
+  // 所有 JS 变量以 xfy_ 开头
+  const xfy_tabs = document.querySelectorAll('.xfy_item');
+  xfy_tabs.forEach((xfy_tab) => {
+    xfy_tab.addEventListener('click', () => {
+      xfy_tabs.forEach((xfy_t) => xfy_t.classList.remove('xfy_active'));
+      xfy_tab.classList.add('xfy_active');
+    });
+  });
+</script>
+</body>
+</html>

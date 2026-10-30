@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学生成绩分析面板 · 等级二（起始模板）</title>
+<style>
+  /* 样式与 target.html 完全一致，方便一比一对照还原 */
+  :root{
+    --bg-1:#1a1c2c; --bg-2:#243b55;
+    --card:#ffffff; --card-soft:rgba(255,255,255,.92);
+    --ink:#1f2733; --ink-soft:#5b6472; --line:#e7eaf0;
+    --primary:#5b7cfa; --primary-d:#3f5fd9;
+    --accent:#21d4b4; --warn:#ff7a59; --gold:#f5b945; --rose:#ff5d8f;
+    --radius:14px; --shadow:0 10px 30px rgba(20,28,48,.18);
+    --shadow-sm:0 4px 14px rgba(20,28,48,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;background:linear-gradient(135deg,var(--bg-1),var(--bg-2));min-height:100vh;color:var(--ink);line-height:1.6;padding:24px}
+  .wrap{max-width:1180px;margin:0 auto}
+  header.head{background:var(--card-soft);border-radius:var(--radius);padding:22px 26px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+  .head h1{font-size:22px;display:flex;align-items:center;gap:10px}
+  .head h1 .logo{width:38px;height:38px;border-radius:11px;flex:none;background:linear-gradient(135deg,var(--primary),var(--accent));display:grid;place-items:center;color:#fff;font-weight:700}
+  .head .sub{color:var(--ink-soft);font-size:13px}
+  .tag-level{font-size:12px;font-weight:700;color:#fff;background:var(--primary);padding:4px 10px;border-radius:20px}
+  section.block{background:var(--card);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow-sm);margin-bottom:18px}
+  .block-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:16px;color:var(--ink)}
+  .block-title::before{content:"";width:4px;height:16px;border-radius:3px;background:var(--primary)}
+  .block-title .hint{font-weight:400;color:var(--ink-soft);font-size:12px}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .stat-card{background:linear-gradient(135deg,#f6f8ff,#fff);border:1px solid var(--line);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden}
+  .stat-card .stat-value{font-size:30px;font-weight:800;color:var(--primary);line-height:1.2}
+  .stat-card .stat-label{font-size:13px;color:var(--ink-soft);margin-top:4px}
+  .stat-card .stat-unit{font-size:14px;color:var(--ink-soft);font-weight:600;margin-left:3px}
+  .stat-card.accent .stat-value{color:var(--accent)}
+  .stat-card.warn .stat-value{color:var(--warn)}
+  .stat-card.gold .stat-value{color:var(--gold)}
+  .subject-list{display:flex;flex-direction:column;gap:12px}
+  .subject-item{display:grid;grid-template-columns:80px 1fr 54px;align-items:center;gap:12px}
+  .subject-name{font-size:14px;font-weight:600}
+  .subject-bar{height:14px;border-radius:8px;background:#eef1f7;overflow:hidden}
+  .subject-bar i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--primary),var(--accent));width:0;transition:width .6s ease}
+  .subject-value{text-align:right;font-weight:700;color:var(--ink)}
+  .controls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+  .search-box{position:relative;flex:1;min-width:220px}
+  .search-box input{width:100%;padding:11px 14px 11px 38px;border:1px solid var(--line);border-radius:10px;font-size:14px;outline:none;transition:border-color .2s}
+  .search-box input:focus{border-color:var(--primary)}
+  .search-box .ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink-soft)}
+  .btn-group{display:flex;gap:6px;background:#eef1f7;padding:4px;border-radius:10px}
+  .btn-group button{border:none;background:transparent;padding:8px 14px;border-radius:7px;font-size:13px;color:var(--ink-soft);cursor:pointer;transition:all .18s}
+  .btn-group button.active{background:#fff;color:var(--primary);font-weight:700;box-shadow:var(--shadow-sm)}
+  .rank-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .rank-card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}
+  .rank-card h4{font-size:13px;color:var(--ink-soft);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .rank-card h4 .dot{width:8px;height:8px;border-radius:50%;background:var(--primary)}
+  .rank-card.champions h4 .dot{background:var(--gold)}
+  .rank-card.fail h4 .dot{background:var(--warn)}
+  .rank-list{display:flex;flex-direction:column;gap:8px}
+  .rank-row{display:flex;align-items:center;justify-content:space-between;font-size:13px}
+  .rank-row .rk{width:22px;height:22px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;font-size:12px}
+  .rank-row .rk.r1{background:#fff3d4;color:#b87d00}
+  .rank-row .rk.r2{background:#eef1f7;color:var(--ink-soft)}
+  .rank-row .rk.r3{background:#fde9dd;color:#c0602a}
+  .rank-row .nm{flex:1;margin:0 8px;font-weight:600}
+  .rank-row .vl{font-weight:700;color:var(--primary)}
+  .rank-card.fail .rank-row .vl{color:var(--warn)}
+  .champ-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px dashed var(--line)}
+  .champ-row:last-child{border-bottom:none}
+  .champ-row .sbj{color:var(--ink-soft)}
+  .champ-row .nm{font-weight:700}
+  .champ-row .vl{color:var(--gold);font-weight:800}
+  .empty{color:var(--ink-soft);font-size:13px;font-style:italic;text-align:center;padding:10px 0}
+  .status-tip{padding:11px 16px;border-radius:10px;font-size:13px;display:flex;align-items:center;gap:8px;background:#eaf6ff;color:#1565c0;border:1px solid #cfe8fb}
+  .status-tip.bad{background:#fff0ec;color:#c0492a;border-color:#ffd9cd}
+  .student-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+  .student-card{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fff;transition:transform .18s,box-shadow .18s;cursor:pointer}
+  .student-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+  .student-card .hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .avatar{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;color:#fff;font-size:15px}
+  .avatar.boy{background:linear-gradient(135deg,#5b7cfa,#7a5bfa)}
+  .avatar.girl{background:linear-gradient(135deg,#ff5d8f,#ff8fb1)}
+  .student-card .name{font-weight:700;font-size:15px}
+  .student-card .meta{font-size:12px;color:var(--ink-soft)}
+  .student-card .rank-badge{margin-left:auto;font-size:12px;font-weight:700;color:#fff;background:var(--primary);padding:3px 9px;border-radius:20px}
+  .student-card .rank-badge.gold{background:var(--gold)}
+  .score-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px}
+  .score-item{text-align:center;background:#f6f8ff;border-radius:8px;padding:6px 2px}
+  .score-item .sbj{font-size:11px;color:var(--ink-soft)}
+  .score-item .val{font-size:14px;font-weight:700}
+  .score-item .val.fail{color:var(--warn)}
+  .score-item .val.full{color:var(--accent)}
+  .student-card .ft{display:flex;align-items:center;justify-content:space-between;border-top:1px dashed var(--line);padding-top:8px;font-size:13px}
+  .student-card .ft .total{font-weight:800;color:var(--primary)}
+  .student-card .ft .avg{color:var(--ink-soft)}
+  .student-card .detail{margin-top:0;max-height:0;overflow:hidden;transition:all .28s ease;font-size:13px;color:var(--ink-soft)}
+  .student-card.open .detail{margin-top:10px;max-height:120px}
+  .detail p{padding:3px 0}
+  .detail b{color:var(--ink)}
+  footer.foot{text-align:center;color:rgba(255,255,255,.7);font-size:12px;padding:14px 0}
+  .task-note{background:#eef6ff;border:1px solid #cfe8fb;color:#1565c0;border-radius:10px;padding:12px 16px;font-size:13px;margin-bottom:18px}
+  .task-note b{color:#0d47a1}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 任务提示（完成后可删除）-->
+  <div class="task-note">
+    <b>📌 等级二·任务说明：</b>本模板已提供完整 HTML 结构与样式，<b>JS 逻辑全部留空</b>。
+    请在下方 <code>&lt;script&gt;</code> 中补全所有函数，运行后与
+    <code>target.html</code> <b>一比一还原</b>（含各科平均、榜单、筛选、卡片展开）。
+    建议用 Trae 打开本文件，对照 target.html 边问边写。
+  </div>
+
+  <header class="head">
+    <h1><span class="logo">分</span>学生成绩分析面板</h1>
+    <div>
+      <span class="tag-level">等级二 · 进阶</span>
+      <div class="sub">DOM 查找 × 数组方法 × 函数 综合实战</div>
+    </div>
+  </header>
+
+  <!-- 区域1：统计卡片 -->
+  <section class="block">
+    <div class="block-title">班级概览 <span class="hint">getElementById / reduce / filter</span></div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-value" id="statCount">0</div><div class="stat-label">班级人数（人）</div></div>
+      <div class="stat-card accent"><div class="stat-value" id="statTotalScore">0</div><div class="stat-label">班级总分</div></div>
+      <div class="stat-card gold"><div class="stat-value" id="statAvgScore">0</div><div class="stat-label">班级平均分</div></div>
+      <div class="stat-card warn"><div class="stat-value" id="statPassRate">0<span class="stat-unit">%</span></div><div class="stat-label">及格率（无不及格科目）</div></div>
+    </div>
+  </section>
+
+  <!-- 区域2：各科平均分（等级二新增）-->
+  <section class="block">
+    <div class="block-title">各科平均分 <span class="hint">reduce / forEach / querySelector / style</span></div>
+    <div class="subject-list" id="subjectList"></div>
+  </section>
+
+  <!-- 区域3：控制区（搜索 + 排序 + 筛选）-->
+  <section class="block">
+    <div class="block-title">数据操作 <span class="hint">filter / sort / querySelectorAll / getElementsByClassName / classList / 事件委托</span></div>
+    <div class="controls">
+      <div class="search-box">
+        <span class="ico">🔍</span>
+        <input type="text" id="searchInput" placeholder="按姓名或学号搜索…">
+      </div>
+      <div class="btn-group" id="sortBtns">
+        <button class="active" data-sort="total">按总分↓</button>
+        <button data-sort="id">按学号↑</button>
+      </div>
+      <div class="btn-group" id="filterBtns">
+        <button class="active" data-filter="all">全部</button>
+        <button data-filter="excellent">优秀</button>
+        <button data-filter="fail">含不及格</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 区域4：榜单与预警（等级二新增）-->
+  <section class="block">
+    <div class="block-title">榜单与预警 <span class="hint">filter / sort / slice / map / reduce / find / some / every / 节点关系</span></div>
+    <div class="status-tip" id="statusTip"></div>
+    <div class="rank-grid" style="margin-top:14px">
+      <div class="rank-card">
+        <h4><span class="dot"></span>优秀学生 Top3（平均≥85）</h4>
+        <div class="rank-list" id="topStudentsList"></div>
+      </div>
+      <div class="rank-card champions">
+        <h4><span class="dot"></span>各科状元</h4>
+        <div class="rank-list" id="subjectChampionsList"></div>
+      </div>
+      <div class="rank-card fail">
+        <h4><span class="dot"></span>不及格预警</h4>
+        <div class="rank-list" id="failWarningList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 区域5：学生卡片列表 -->
+  <section class="block">
+    <div class="block-title">学生成绩卡片 <span class="hint">forEach / createElement / classList / closest / 节点关系 / 事件委托</span></div>
+    <div class="student-grid" id="studentList"></div>
+  </section>
+
+  <footer class="foot">高级网页设计课堂实践任务 · 等级二（进阶）· 起始模板</footer>
+</div>
+
+<script src="data.js"></script>
+<script>
+/* ============================================================
+ * 等级二（进阶）· 起始模板
+ * 在下方补全全部函数，运行后与 target.html 一比一还原
+ * 数据来源：window.STUDENTS / window.SUBJECTS（见 data.js）
+ * ------------------------------------------------------------
+ * 【考察点速查表】
+ *   DOM 查找: getElementById / querySelector / querySelectorAll
+ *             / getElementsByClassName(动态集合) / 节点关系(parentNode,
+ *             children, nextElementSibling, firstElementChild, lastElementChild,
+ *             closest) / classList
+ *   数组方法: forEach / map / filter / reduce / sort / find / some / every / slice
+ *   函数    : 计算函数(纯函数) / 渲染函数 / 事件处理 / 事件委托 / 工具函数
+ * ============================================================ */
+(function () {
+  "use strict";
+  const STUDENTS = window.STUDENTS;
+  const SUBJECTS = window.SUBJECTS;
+
+  const PASS_LINE = 60;
+  const EXCELLENT_AVG = 85;
+
+
+  /* ---------- 工具函数 ---------- */
+  // 不及格返回 "fail"，满分返回 "full"
+  function scoreClass(v) {
+    // TODO
+    return "";
+  }
+
+  // 总分：reduce 累加各科
+  function getTotal(s) {
+    // TODO
+    return 0;
+  }
+
+  // 平均分：总分/科目数，保留1位小数
+  function getAvg(s) {
+    // TODO
+    return 0;
+  }
+
+  // 不及格科目数组：filter
+  function getFails(s) {
+    // TODO
+    return [];
+  }
+
+  // 姓名首字
+  function firstName(s) {
+    // TODO
+    return s.name.charAt(0);
+  }
+
+
+  /* ============ 以下为本等级必做函数 ============ */
+
+  /* ① 渲染统计卡片 —— getElementById + reduce + filter
+   * 人数 / 总分 / 平均分 / 及格率（无不及格科目人数占比）
+   * 注意 statPassRate 内有 <span class="stat-unit">%</span>，用 .firstChild 改数字
+   */
+  function renderStats(list) {
+    // TODO
+  }
+
+
+  /* ② 渲染各科平均分 —— reduce + forEach + querySelector + style（进度条）
+   * 每科用 reduce 求平均，生成 .subject-item，进度条宽度 = 平均分/满分
+   * 用 requestAnimationFrame 触发 width 动画（item.querySelector("i")）
+   */
+  function renderSubjectAverages(list) {
+    // TODO
+  }
+
+
+  /* ③ 渲染榜单与预警 —— filter + sort + slice + map + reduce + find + some + every
+   * 包含三块：优秀Top3 / 各科状元 / 不及格预警，外加 #statusTip 状态条
+   * - 优秀Top3: filter(平均≥85) → sort(总分降序) → slice(0,3)
+   * - 各科状元: 遍历科目，reduce 找该科最高分者
+   * - 不及格预警: filter(有不及格) → sort(不及格数降序)
+   * - 状态条: some(有不及格) / every(全员优秀) 决定文案与样式
+   */
+  function renderRankings(list) {
+    // TODO 1: 优秀 Top3 → #topStudentsList
+    // TODO 2: 各科状元 → #subjectChampionsList
+    // TODO 3: 不及格预警 → #failWarningList
+    // TODO 4: 状态条 #statusTip：some / every 判断
+  }
+
+
+  /* ④ 渲染学生卡片列表 —— forEach + createElement + classList
+   * 每张卡片：头像+姓名+学号+排名徽章 / 五科分数网格 / 总分+均分 / 详情区
+   * 排名 = 当前 list 中的序号+1；前3名徽章加 gold 类
+   * 详情区 .detail 默认隐藏，点击卡片后 .student-card.open 展开
+   */
+  function renderStudentCards(list) {
+    // TODO
+  }
+
+
+  /* ⑤ 搜索 —— filter + 姓名或学号命中（忽略大小写、去空格）
+   * 无关键字返回全部
+   */
+  function search(keyword) {
+    // TODO
+    return STUDENTS.slice();
+  }
+
+
+  /* ⑥ 排序 —— sort + slice（返回新数组）
+   * by="total" 按总分降序；by="id" 按学号升序
+   */
+  var currentSort = "total";
+  function sortList(list, by) {
+    // TODO
+    return list.slice();
+  }
+
+
+  /* ⑦ 筛选 —— filter（等级二新增）
+   * mode="excellent" 平均≥85；mode="fail" 有不及格；"all" 返回全部
+   */
+  var currentFilter = "all";
+  function filterList(list, mode) {
+    // TODO
+    return list.slice();
+  }
+
+
+  /* ---------- 主刷新流程：依次调用上述函数 ---------- */
+  function refresh() {
+    var kw = document.getElementById("searchInput").value;
+    var data = filterList(sortList(search(kw), currentSort), currentFilter);
+    renderStats(data);
+    renderSubjectAverages(data);
+    renderRankings(data);
+    renderStudentCards(data);
+  }
+
+
+  /* ---------- 事件绑定（已给出，无需修改，但需理解 closest / 事件委托） ---------- */
+  var timer = null;
+  document.getElementById("searchInput").addEventListener("input", function () {
+    clearTimeout(timer);
+    timer = setTimeout(refresh, 200);
+  });
+
+  // 排序按钮：事件委托 + closest + querySelectorAll(静态集合)
+  document.getElementById("sortBtns").addEventListener("click", function (e) {
+    var btn = e.target.closest("button");
+    if (!btn) return;
+    currentSort = btn.getAttribute("data-sort");
+    this.querySelectorAll("button").forEach(function (b) { b.classList.remove("active"); });
+    btn.classList.add("active");
+    refresh();
+  });
+
+  // 筛选按钮：事件委托 + closest + getElementsByClassName(动态集合) —— 考察动态vs静态集合
+  document.getElementById("filterBtns").addEventListener("click", function (e) {
+    var btn = e.target.closest("button");
+    if (!btn) return;
+    currentFilter = btn.getAttribute("data-filter");
+    var btns = this.getElementsByClassName("active");
+    while (btns.length) { btns[0].classList.remove("active"); }
+    btn.classList.add("active");
+    refresh();
+  });
+
+  // 卡片展开：事件委托 + closest + 节点关系(lastElementChild) + classList.toggle
+  document.getElementById("studentList").addEventListener("click", function (e) {
+    var card = e.target.closest(".student-card");
+    if (!card) return;
+    var detail = card.lastElementChild; // detail 是卡片最后一个子元素
+    card.classList.toggle("open");
+  });
+
+  /* ---------- 初始化 ---------- */
+  refresh();
+})();
+</script>
+</body>
+</html>

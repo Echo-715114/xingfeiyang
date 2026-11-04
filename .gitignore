@@ -6,3 +6,6 @@ webproject-xingfeiyang/
 
 # Trae 工具缓存
 .trae-html-share-packages/
+
+# Windows 缩略图缓存
+Thumbs.db

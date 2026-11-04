@@ -11,6 +11,23 @@
 - Prefix new CSS classes, IDs, and JS variables with `xfy_` (see `xfy_prompt.md`). Older starter templates may not follow this; new work must.
 - For page work requested by a prompt, append the prompt to `xfy_prompt.md` with timestamp, model, and verbatim content before implementing. Never overwrite existing entries.
 - New HTML pages should link back to the homepage with `<a class="xfy_home" href="index.html">返回首页</a>`. Note: the root `index.html` does not currently exist, so existing iconfont pages link to a missing page; confirm before creating/restoring it.
+- Every new HTML file must start with a comment block right after `<!DOCTYPE html>` containing four items — author 邢菲洋, creation date, model used, and feature name:
+
+  ```html
+  <!--
+    作者：邢菲洋
+    建立时间：2026-11-04
+    使用大模型：GLM-5.3-Flash
+    功能名称：XX页面
+  -->
+  ```
+
+- Every JS function must carry a comment describing what it mainly does, placed above the function:
+
+  ```js
+  // 渲染学生成绩表格：遍历 STUDENTS 生成行并计算平均分
+  function xfy_renderTable() { ... }
+  ```
 - UI copy and commit messages are in Chinese.
 
 ## Where things live
@@ -30,7 +47,7 @@
 
 ## Git and submission
 
-- Root remote: `https://gitee.com/neusoft_wangyao_jsj/xfy715114.git`. Subrepo remote: `https://gitee.com/neusoft_wangyao_jsj/webproject-xingfeiyang.git`. Both use `master`.
+- Root remotes: `github` → `git@github.com:Echo-715114/xingfeiyang.git` (SSH key via 443), `origin` → `https://gitee.com/neusoft_wangyao_jsj/xfy715114.git`. Subrepo remote: `https://gitee.com/neusoft_wangyao_jsj/webproject-xingfeiyang.git`. All use `master`.
 - Follow the existing local skills: `.trae/skills/commit-xfy715114/SKILL.md` for the root repo, `.trae/skills/commit-to-gitee/SKILL.md` for the subrepo. Stage files individually (no `git add -A`), avoid force-push/amend, and never commit tokens.
 - If the user only says "提交项目" without naming a repo, confirm which repo before committing.
-- The root working tree currently has uncommitted `四级项目/` changes and untracked `模块6/`; do not commit unless asked.
+- The root working tree may have uncommitted changes (often just `xfy_prompt.md` prompt-log entries); do not commit unless asked.

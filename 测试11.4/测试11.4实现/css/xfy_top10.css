@@ -1,0 +1,104 @@
+/*
+ * 作者：邢菲洋
+ * 建立时间：2026-11-04
+ * 使用大模型：GLM-5.3-Flash
+ * 功能名称：视频TOP10排行榜样式
+ */
+
+/* 全局重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 页面容器：居中灰底 */
+body {
+  background: #f4f5f7;
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  padding: 40px 16px;
+}
+.xfy_page {
+  width: 400px;
+  margin: 0 auto;
+}
+
+/* 排行卡片：白底细边框 */
+.xfy_top10 {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* 选项卡栏：四个按钮等分，按钮间白色分隔，栏底一条灰线 */
+.xfy_tab-bar {
+  display: flex;
+  border-bottom: 3px solid #b5b5b5;
+  background: #fff;
+}
+.xfy_tab-item {
+  flex: 1;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+  background: #e0e0e0; /* 未选中：浅灰底黑字 */
+  cursor: pointer;
+  user-select: none;
+  border-right: 3px solid #fff; /* tab 之间白色分隔线 */
+  transition: background .2s, color .2s;
+}
+.xfy_tab-item:last-child { border-right: none; }
+/* 设计图未展示 hover 态，故不添加悬停效果 */
+
+/* 选中态：深灰底白字 */
+.xfy_tab-item.xfy_active {
+  background: #8a8a8a;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* 榜单面板：默认隐藏，选中显示；内部左右两列 */
+.xfy_tab-panel {
+  display: none;
+  padding: 14px 18px 18px;
+}
+.xfy_tab-panel.xfy_active { display: flex; }
+.xfy_rank-list {
+  list-style: none;
+  flex: 1;
+}
+
+/* 榜单项：序号方块 + 剧名 */
+.xfy_rank-item {
+  height: 38px;
+  line-height: 38px;
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 序号方块：圆角小方块白字 */
+.xfy_rank-num {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  margin-right: 8px;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  color: #fff;
+  background: #c0c0c0;
+  border-radius: 3px;
+}
+
+/* 前三名序号：统一红色（与设计图一致） */
+.xfy_rank-num.xfy_top1 { background: #e4393c; }
+.xfy_rank-num.xfy_top2 { background: #e4393c; }
+.xfy_rank-num.xfy_top3 { background: #e4393c; }

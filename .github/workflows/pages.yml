@@ -1,0 +1,38 @@
+# 工作流名称：部署静态站点到 GitHub Pages
+# 用途：每次推送到 master 后自动把整个工作区发布为 GitHub Pages 网站
+name: Deploy static site to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch: # 支持在 GitHub 页面手动触发
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+      - name: 配置 Pages（自动开启站点）
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: 上传站点文件
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - name: 部署
+        id: deployment
+        uses: actions/deploy-pages@v4

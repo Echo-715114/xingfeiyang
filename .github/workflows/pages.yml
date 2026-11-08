@@ -1,5 +1,5 @@
-# 工作流名称：部署静态站点到 GitHub Pages
-# 用途：每次推送到 master 后自动把整个工作区发布为 GitHub Pages 网站
+# 工作流名称：部署静态站点到 GitHub Pages（gh-pages 分支模式）
+# 用途：每次推送到 master 后自动组装站点并推送到 gh-pages 分支，Pages 从该分支发布
 name: Deploy static site to GitHub Pages
 
 on:
@@ -8,20 +8,15 @@ on:
   workflow_dispatch: # 支持在 GitHub 页面手动触发
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write # 需要 write 权限推送 gh-pages 分支
 
 concurrency:
-  group: pages
+  group: gh-pages
   cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
@@ -37,25 +32,13 @@ jobs:
           for item in $(ls -A | grep -vE '^(\.git$|\.github$|_site$|webproject-xingfeiyang$)'); do cp -a "$item" _site/; done
           cp -a webproject-xingfeiyang _site/
           rm -rf _site/webproject-xingfeiyang/.git
-          # 关键修复：删除 _site 里的 .gitignore（其 webproject 排除规则会导致上传工具丢弃整个子目录）
           rm -f _site/.gitignore
-          # 上传工具只认 git 跟踪的文件，强制把 _site 纳入索引
-          git add -f _site
-          # 诊断：把站点目录清单写进站点，部署后可在线读取
-          echo "=== runner 上 webproject-xingfeiyang 顶层 ===" > _site/deploy-manifest.txt
-          ls -la webproject-xingfeiyang | head -30 >> _site/deploy-manifest.txt
-          echo "=== _site 顶层 ===" >> _site/deploy-manifest.txt
-          ls -la _site >> _site/deploy-manifest.txt
-          echo "=== _site/webproject-xingfeiyang 顶层 ===" >> _site/deploy-manifest.txt
-          ls -la _site/webproject-xingfeiyang 2>&1 | head -30 >> _site/deploy-manifest.txt
-      - name: 配置 Pages（自动开启站点）
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - name: 上传站点文件
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-      - name: 部署
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: 推送到 gh-pages 分支
+        run: |
+          cd _site
+          git init -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "deploy: ${GITHUB_SHA::7}"
+          git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Echo-715114/xingfeiyang.git" HEAD:gh-pages

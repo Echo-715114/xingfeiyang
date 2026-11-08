@@ -31,6 +31,12 @@ jobs:
           repository: Echo-715114/webproject-xingfeiyang
           ref: master
           path: webproject-xingfeiyang
+      - name: 组装站点目录（主仓库内容 + 课堂实践中心，去掉嵌套 .git）
+        run: |
+          mkdir -p _site
+          for item in $(ls -A | grep -vE '^(\.git$|\.github$|_site$|webproject-xingfeiyang$)'); do cp -a "$item" _site/; done
+          cp -a webproject-xingfeiyang _site/
+          rm -rf _site/webproject-xingfeiyang/.git
       - name: 配置 Pages（自动开启站点）
         uses: actions/configure-pages@v5
         with:
@@ -38,7 +44,7 @@ jobs:
       - name: 上传站点文件
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - name: 部署
         id: deployment
         uses: actions/deploy-pages@v4

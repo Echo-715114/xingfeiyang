@@ -41,6 +41,13 @@ jobs:
           rm -f _site/.gitignore
           # 上传工具只认 git 跟踪的文件，强制把 _site 纳入索引
           git add -f _site
+          # 诊断：把站点目录清单写进站点，部署后可在线读取
+          echo "=== runner 上 webproject-xingfeiyang 顶层 ===" > _site/deploy-manifest.txt
+          ls -la webproject-xingfeiyang | head -30 >> _site/deploy-manifest.txt
+          echo "=== _site 顶层 ===" >> _site/deploy-manifest.txt
+          ls -la _site >> _site/deploy-manifest.txt
+          echo "=== _site/webproject-xingfeiyang 顶层 ===" >> _site/deploy-manifest.txt
+          ls -la _site/webproject-xingfeiyang 2>&1 | head -30 >> _site/deploy-manifest.txt
       - name: 配置 Pages（自动开启站点）
         uses: actions/configure-pages@v5
         with:

@@ -37,6 +37,8 @@ jobs:
           for item in $(ls -A | grep -vE '^(\.git$|\.github$|_site$|webproject-xingfeiyang$)'); do cp -a "$item" _site/; done
           cp -a webproject-xingfeiyang _site/
           rm -rf _site/webproject-xingfeiyang/.git
+          # 上传工具只认 git 跟踪的文件，强制把 _site 纳入索引
+          git add -f _site
       - name: 配置 Pages（自动开启站点）
         uses: actions/configure-pages@v5
         with:

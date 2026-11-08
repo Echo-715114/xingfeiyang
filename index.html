@@ -1,74 +1,28 @@
 <!DOCTYPE html>
 <!--
   作者：邢菲洋
-  建立时间：2026-11-04
+  建立时间：2026-11-08
   使用大模型：GLM-5.3-Flash
-  功能名称：课程作品导航首页
+  功能名称：站点入口引导页（自动跳转至课堂实践中心）
 -->
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>邢菲洋 · 高级网页设计作品导航</title>
+  <title>高级网页设计 · 站点入口</title>
+  <meta http-equiv="refresh" content="0; url=webproject-xingfeiyang/index.html">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
-      background: #f4f5f7;
-      color: #22263b;
-      padding: 60px 16px;
-    }
-    .xfy_page { max-width: 680px; margin: 0 auto; }
-    .xfy_header { text-align: center; margin-bottom: 36px; }
-    .xfy_header h1 { font-size: 26px; letter-spacing: 3px; }
-    .xfy_header p { color: #8a93a6; font-size: 13px; margin-top: 10px; }
-    .xfy_card-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .xfy_card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 22px 20px;
-      text-decoration: none;
-      color: #22263b;
-      box-shadow: 0 4px 18px rgba(34, 38, 59, .08);
-      transition: transform .2s, box-shadow .2s;
-    }
-    .xfy_card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(34, 38, 59, .14); }
-    .xfy_card h2 { font-size: 16px; margin-bottom: 8px; color: #2456a6; }
-    .xfy_card p { font-size: 13px; color: #8a93a6; line-height: 1.6; }
+    .xfy_gate{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:18px;background:#1d1b2e;color:#f4f2ee;font-family:"Microsoft YaHei",sans-serif}
+    .xfy_gate h1{font-size:26px;letter-spacing:2px}
+    .xfy_gate a{color:#ffd166;text-decoration:none;font-size:16px;border:1px solid #ffd166;padding:10px 26px;border-radius:999px}
+    .xfy_gate p{opacity:.7;font-size:14px}
   </style>
 </head>
 <body>
-  <div class="xfy_page">
-    <header class="xfy_header">
-      <h1>高级网页设计 · 作品导航</h1>
-      <p>邢菲洋 — 点击卡片查看对应作业</p>
-    </header>
-    <div class="xfy_card-list">
-      <a class="xfy_card" href="tab-news.html">
-        <h2>新闻选项卡</h2>
-        <p>国内 / 省内 / 国际 / 最热新闻切换，可复用 Tab 组件</p>
-      </a>
-      <a class="xfy_card" href="测试11.4/测试11.4实现/index.html">
-        <h2>视频 TOP10 排行榜</h2>
-        <p>每日 / 每周 / 每月 / 全部榜单，样式还原练习</p>
-      </a>
-      <a class="xfy_card" href="iconfont-1.html">
-        <h2>图标标本 · 铸字间</h2>
-        <p>Font Awesome 字体图标示例</p>
-      </a>
-      <a class="xfy_card" href="iconfont-2.html">
-        <h2>图标标本 · 制图室</h2>
-        <p>Lucide SVG 图标示例</p>
-      </a>
-      <a class="xfy_card" href="iconfont-3.html">
-        <h2>图标标本 · 字体版底栏</h2>
-        <p>移动端固定底部导航（字体图标 + 数字徽章）</p>
-      </a>
-      <a class="xfy_card" href="iconfont-4.html">
-        <h2>图标标本 · SVG 版底栏</h2>
-        <p>移动端固定底部导航（SVG 图标 + 红点提示）</p>
-      </a>
-    </div>
+  <div class="xfy_gate">
+    <h1>高级网页设计 · 作品站点</h1>
+    <a href="webproject-xingfeiyang/index.html">进入课堂实践中心 →</a>
+    <p>如未自动跳转，请点击上方链接</p>
   </div>
 </body>
 </html>

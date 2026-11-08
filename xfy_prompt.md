@@ -187,3 +187,54 @@
 > 测试11.4实现文件夹项目提交到Github，`https://github.com/Echo-715114/xingfeiyang`
 
 ---
+
+## 2026-11-04 14:55:20
+
+- **模型**：GLM-5.3-Flash
+- **提示词内容**：
+
+> 就要测试11.4实现的Github发布链接网址给我
+
+---
+
+## 2026-11-06 09:20:00
+
+- **模型**：GLM-5.3-Flash
+- **提示词内容**：
+
+> file:///D:/高级网页设计/webproject-xingfeiyang/index.html给我添加后续板块，包含file:///D:/高级网页设计/index.html里面六个板块和swiper-task.html,样式同前，保留"后续板块"模块
+
+- **追加指示**：不分开，接着"函数的三个方法"卡片后边，取消独立"后续板块"标题区块
+
+---
+
+## 2026-11-06 09:35:00
+
+- **模型**：GLM-5.3-Flash
+- **提示词内容**：
+
+> swiper-task.html任务4和进阶填好其他不变，实现`https://spontaneous-valkyrie-4e4229.netlify.app/swiper-lesson`5的切换效果
+
+---
+
+## 2026-11-06 09:42:00
+
+- **模型**：GLM-5.3-Flash
+- **提示词内容**：
+
+> swiper-task.html填好
+
+---
+
+## 2026-11-08 10:30:00
+
+- **模型**：GLM-5.3-Flash
+- **提示词内容**：
+
+> 我一会要改文件位置，记住现在状态，改完告诉你，改需要调整的跳转链接
+> 好了
+> 需要同步挪动的都挪，index.html在啊为啥报错，我从新交一次呢？
+
+- **说明**：作业文件移入 webproject-xingfeiyang；同步挪 js/cdn/swiper-imgs；根 index.html 重建为站点入口跳转页；两仓库重新提交推送
+
+---

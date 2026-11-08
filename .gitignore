@@ -9,3 +9,6 @@ webproject-xingfeiyang/
 
 # Windows 缩略图缓存
 Thumbs.db
+
+# 本地 Swiper 组件库（教师课件资源，作业页面用线上 CDN，不入库）
+swiper/

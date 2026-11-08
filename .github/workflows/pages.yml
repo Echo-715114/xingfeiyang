@@ -37,6 +37,8 @@ jobs:
           for item in $(ls -A | grep -vE '^(\.git$|\.github$|_site$|webproject-xingfeiyang$)'); do cp -a "$item" _site/; done
           cp -a webproject-xingfeiyang _site/
           rm -rf _site/webproject-xingfeiyang/.git
+          # 关键修复：删除 _site 里的 .gitignore（其 webproject 排除规则会导致上传工具丢弃整个子目录）
+          rm -f _site/.gitignore
           # 上传工具只认 git 跟踪的文件，强制把 _site 纳入索引
           git add -f _site
       - name: 配置 Pages（自动开启站点）

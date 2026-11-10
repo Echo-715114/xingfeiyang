@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图纸标本 XFY-002 — Lucide 线形图标 | XFY 字形研究所</title>
+<!-- Lucide 图标脚本（本地文件，运行时把 data-lucide 元素替换为内联 SVG） -->
+<script src="cdn/lucide/lucide.min.js"></script>
+<style>
+  /* ===== 设计令牌：制图室（蓝图坐标纸） ===== */
+  :root{
+    --xfy_blueprint:#12294F;   /* 蓝图蓝 */
+    --xfy_line:#E9EFF8;        /* 制图白 */
+    --xfy_accent:#E5C15C;      /* 标注黄 */
+    --xfy_sheer:rgba(233,239,248,.04);
+    --xfy_fang:"FangSong","STFangsong","Noto Serif SC",serif; /* 工程仿宋 */
+    --xfy_hei:"PingFang SC","Microsoft YaHei",sans-serif;
+    --xfy_strokeVal:1.75;      /* 线宽（滑杆控制） */
+    --xfy_iconSize:44px;       /* 图标尺寸（按钮控制） */
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    color:var(--xfy_line);
+    font-family:var(--xfy_fang);
+    line-height:1.8;
+    background-color:var(--xfy_blueprint);
+    /* 坐标纸：小格 + 大格 */
+    background-image:
+      linear-gradient(rgba(233,239,248,.13) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(233,239,248,.13) 1px,transparent 1px),
+      linear-gradient(rgba(233,239,248,.055) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(233,239,248,.055) 1px,transparent 1px);
+    background-size:140px 140px,140px 140px,28px 28px,28px 28px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  :focus-visible{outline:2px dashed var(--xfy_accent);outline-offset:3px;}
+  ::selection{background:var(--xfy_accent);color:var(--xfy_blueprint);}
+
+  /* ===== 四角裁切标记 ===== */
+  .xfy_mark{position:fixed;width:22px;height:22px;pointer-events:none;z-index:5;}
+  .xfy_markTL{top:12px;left:12px;border-top:1.5px solid var(--xfy_line);border-left:1.5px solid var(--xfy_line);}
+  .xfy_markTR{top:12px;right:12px;border-top:1.5px solid var(--xfy_line);border-right:1.5px solid var(--xfy_line);}
+  .xfy_markBL{bottom:12px;left:12px;border-bottom:1.5px solid var(--xfy_line);border-left:1.5px solid var(--xfy_line);}
+  .xfy_markBR{bottom:12px;right:12px;border-bottom:1.5px solid var(--xfy_line);border-right:1.5px solid var(--xfy_line);}
+
+  .xfy_wrap{max-width:1120px;margin:0 auto;padding:0 clamp(18px,4vw,48px);}
+
+  /* ===== 图头 ===== */
+  .xfy_top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:26px 0 16px;border-bottom:1px solid rgba(233,239,248,.5);
+  }
+  .xfy_brand{display:flex;align-items:center;gap:12px;}
+  .xfy_gauge{ /* 品牌记号：圆规脚 */
+    width:36px;height:36px;border:1.5px solid var(--xfy_accent);
+    display:grid;place-items:center;transform:rotate(45deg);
+  }
+  .xfy_gauge::before{content:"";width:12px;height:12px;background:var(--xfy_accent);}
+  .xfy_brandName{font-family:var(--xfy_hei);font-size:17px;letter-spacing:.16em;font-weight:700;}
+  .xfy_home{
+    font-family:var(--xfy_hei);font-size:13px;text-decoration:none;letter-spacing:.2em;
+    border:1px solid var(--xfy_line);padding:7px 16px;
+    transition:background .2s,color .2s;
+  }
+  .xfy_home:hover{background:var(--xfy_line);color:var(--xfy_blueprint);}
+
+  /* ===== 首屏：图版 ===== */
+  .xfy_hero{
+    display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+    align-items:center;gap:clamp(24px,4vw,56px);
+    padding:clamp(44px,7vw,88px) 0 clamp(40px,6vw,72px);
+  }
+  .xfy_sheetNo{
+    font-family:var(--xfy_hei);font-size:13px;letter-spacing:.32em;
+    color:var(--xfy_accent);margin-bottom:18px;
+  }
+  .xfy_title{
+    font-family:var(--xfy_hei);
+    font-size:clamp(38px,6vw,72px);font-weight:900;line-height:1.16;letter-spacing:.04em;
+  }
+  .xfy_lede{max-width:32em;margin-top:24px;font-size:clamp(15px,1.5vw,17px);color:rgba(233,239,248,.85);}
+  .xfy_lede b{color:var(--xfy_accent);font-weight:400;border-bottom:1px solid var(--xfy_accent);}
+  .xfy_facts{
+    display:flex;flex-wrap:wrap;margin-top:32px;
+    border-top:1px solid rgba(233,239,248,.5);border-bottom:1px solid rgba(233,239,248,.5);
+  }
+  .xfy_facts>div{padding:11px 22px 11px 0;margin-right:22px;border-right:1px solid rgba(233,239,248,.3);}
+  .xfy_facts>div:last-child{border-right:none;}
+  .xfy_facts dt{font-family:var(--xfy_hei);font-size:11px;letter-spacing:.3em;color:rgba(233,239,248,.6);}
+  .xfy_facts dd{font-size:15px;margin-top:2px;}
+  .xfy_heroPlate{
+    justify-self:stretch;
+    border:1px solid rgba(233,239,248,.55);
+    padding:clamp(28px,4vw,52px) clamp(20px,3vw,40px) 18px;
+    position:relative;background:var(--xfy_sheer);
+  }
+  .xfy_heroPlate::before,.xfy_heroPlate::after{ /* 图版角标 */
+    content:"";position:absolute;width:10px;height:10px;border-color:var(--xfy_accent);border-style:solid;
+  }
+  .xfy_heroPlate::before{top:-1px;left:-1px;border-width:2px 0 0 2px;}
+  .xfy_heroPlate::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0;}
+  .xfy_heroPlate svg{
+    display:block;margin:0 auto;
+    width:clamp(140px,16vw,210px);height:clamp(140px,16vw,210px);
+    stroke:var(--xfy_line);stroke-width:var(--xfy_strokeVal);
+  }
+  .xfy_dim{ /* 尺寸标注线 */
+    display:flex;align-items:center;gap:10px;justify-content:center;
+    margin-top:20px;font-family:var(--xfy_hei);font-size:11.5px;letter-spacing:.18em;
+    color:var(--xfy_accent);
+  }
+  .xfy_dim::before,.xfy_dim::after{content:"";flex:0 0 44px;height:1px;background:var(--xfy_accent);}
+
+  /* ===== 控制台 ===== */
+  .xfy_console{
+    border:1px solid rgba(233,239,248,.55);background:var(--xfy_sheer);
+    display:flex;flex-wrap:wrap;align-items:center;gap:18px 44px;
+    padding:18px clamp(20px,3vw,36px);margin-bottom:clamp(36px,5vw,56px);
+  }
+  .xfy_ctrlLabel{font-family:var(--xfy_hei);font-size:13px;letter-spacing:.24em;}
+  .xfy_strokeBox{display:flex;align-items:center;gap:14px;flex:1 1 260px;}
+  .xfy_strokeBox input[type=range]{
+    flex:1;accent-color:var(--xfy_accent);min-width:120px;
+  }
+  .xfy_strokeVal{
+    font-family:Consolas,monospace;font-size:14px;color:var(--xfy_accent);
+    min-width:3.2em;text-align:right;
+  }
+  .xfy_sizeBox{display:flex;align-items:center;gap:10px;}
+  .xfy_sizeBtn{
+    font-family:Consolas,monospace;font-size:13px;
+    background:none;border:1px solid rgba(233,239,248,.5);color:var(--xfy_line);
+    padding:5px 13px;cursor:pointer;transition:background .15s,color .15s;
+  }
+  .xfy_sizeBtn[aria-pressed=true]{background:var(--xfy_line);color:var(--xfy_blueprint);}
+  .xfy_sizeBtn:hover{border-color:var(--xfy_accent);color:var(--xfy_accent);}
+  .xfy_sizeBtn[aria-pressed=true]:hover{color:var(--xfy_blueprint);}
+
+  /* ===== 图纸分区 ===== */
+  .xfy_zone{
+    border:1px solid rgba(233,239,248,.55);
+    margin-bottom:clamp(28px,4vw,44px);
+  }
+  .xfy_zoneHead{
+    display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px 20px;
+    padding:10px 18px;border-bottom:1px solid rgba(233,239,248,.55);
+  }
+  .xfy_zoneHead h2{font-family:var(--xfy_hei);font-size:16px;letter-spacing:.3em;font-weight:700;}
+  .xfy_zoneHead h2 em{font-style:normal;color:var(--xfy_accent);margin-right:14px;}
+  .xfy_zoneHead p{font-family:var(--xfy_hei);font-size:11.5px;letter-spacing:.2em;color:rgba(233,239,248,.55);}
+  .xfy_grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  }
+  .xfy_cell{
+    background:none;cursor:pointer;
+    border:none;border-right:1px solid rgba(233,239,248,.25);border-bottom:1px solid rgba(233,239,248,.25);
+    padding:26px 10px 20px;
+    display:flex;flex-direction:column;align-items:center;gap:14px;
+    transition:background .15s;
+  }
+  .xfy_grid .xfy_cell:nth-child(6n){border-right:none;}
+  .xfy_cell svg{
+    width:var(--xfy_iconSize);height:var(--xfy_iconSize);
+    stroke:var(--xfy_line);stroke-width:var(--xfy_strokeVal);
+    transition:stroke .15s;
+  }
+  .xfy_cellName{font-family:var(--xfy_fang);font-size:13.5px;letter-spacing:.18em;color:rgba(233,239,248,.62);}
+  .xfy_cell:hover{background:rgba(233,239,248,.09);}
+  .xfy_cell:hover svg{stroke:var(--xfy_accent);}
+  .xfy_cell:hover .xfy_cellName{color:var(--xfy_line);}
+
+  /* ===== 晒图纸：反白用法区 ===== */
+  .xfy_usage{
+    background:#EDF2FA;color:var(--xfy_blueprint);
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);
+    outline:1px solid var(--xfy_line);outline-offset:6px;
+    margin:clamp(40px,5vw,64px) 6px 0;
+  }
+  .xfy_usageNote{padding:clamp(24px,3.5vw,44px);border-right:1px solid rgba(18,41,79,.25);}
+  .xfy_usageNote h3{font-family:var(--xfy_hei);font-size:20px;letter-spacing:.14em;margin-bottom:12px;}
+  .xfy_usageNote p{font-family:var(--xfy_hei);font-size:13.5px;line-height:1.95;color:rgba(18,41,79,.8);}
+  .xfy_code{padding:clamp(24px,3.5vw,44px);display:flex;flex-direction:column;justify-content:center;gap:10px;}
+  .xfy_code pre{
+    font-family:Consolas,"Courier New",monospace;font-size:clamp(13px,1.4vw,15px);
+    line-height:1.9;overflow-x:auto;color:#1C3A6E;
+  }
+  .xfy_code .xfy_fn{color:#8A5A00;}
+
+  /* ===== 标题栏（图签） ===== */
+  .xfy_titleBlock{
+    margin:clamp(44px,6vw,72px) 0 46px;
+    border:1.5px solid var(--xfy_line);
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  }
+  .xfy_titleBlock>div,.xfy_titleBlock>a{
+    padding:12px 18px;border-right:1px solid rgba(233,239,248,.45);
+    display:flex;flex-direction:column;gap:2px;text-decoration:none;
+  }
+  .xfy_titleBlock>div:last-child,.xfy_titleBlock>a:last-child{border-right:none;}
+  .xfy_titleBlock dt{font-family:var(--xfy_hei);font-size:10.5px;letter-spacing:.3em;color:rgba(233,239,248,.55);}
+  .xfy_titleBlock dd{font-size:14.5px;}
+  .xfy_titleBlock a{transition:background .15s,color .15s;}
+  .xfy_titleBlock a dd{color:var(--xfy_accent);}
+  .xfy_titleBlock a:hover{background:var(--xfy_line);}
+  .xfy_titleBlock a:hover dd{color:var(--xfy_blueprint);}
+
+  /* ===== 复制提示 ===== */
+  .xfy_toast{
+    position:fixed;left:50%;bottom:34px;transform:translate(-50%,16px);
+    background:var(--xfy_line);color:var(--xfy_blueprint);
+    font-family:var(--xfy_hei);font-size:13.5px;letter-spacing:.16em;
+    padding:11px 26px;opacity:0;pointer-events:none;z-index:9;
+    transition:opacity .25s,transform .25s;
+    border-left:4px solid var(--xfy_accent);
+  }
+  .xfy_toast.xfy_show{opacity:1;transform:translate(-50%,0);}
+
+  /* ===== 绘线动画（仅首屏图版，JS 配合） ===== */
+  .xfy_heroPlate svg path,
+  .xfy_heroPlate svg circle,
+  .xfy_heroPlate svg line,
+  .xfy_heroPlate svg polyline,
+  .xfy_heroPlate svg polygon{transition:stroke-dashoffset 1s ease;}
+
+  /* ===== 响应式 ===== */
+  @media (max-width:760px){
+    .xfy_hero{grid-template-columns:1fr;}
+    .xfy_usage{grid-template-columns:1fr;}
+    .xfy_usageNote{border-right:none;border-bottom:1px solid rgba(18,41,79,.25);}
+    .xfy_grid .xfy_cell:nth-child(6n){border-right:1px solid rgba(233,239,248,.25);}
+    .xfy_grid .xfy_cell:nth-child(2n){border-right:none;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .xfy_heroPlate svg path,.xfy_heroPlate svg circle,.xfy_heroPlate svg line,
+    .xfy_heroPlate svg polyline,.xfy_heroPlate svg polygon{transition:none;}
+    .xfy_cell,.xfy_home,.xfy_sizeBtn{transition:none;}
+  }
+</style>
+</head>
+<body>
+<span class="xfy_mark xfy_markTL" aria-hidden="true"></span>
+<span class="xfy_mark xfy_markTR" aria-hidden="true"></span>
+<span class="xfy_mark xfy_markBL" aria-hidden="true"></span>
+<span class="xfy_mark xfy_markBR" aria-hidden="true"></span>
+
+<div class="xfy_wrap">
+
+  <header class="xfy_top">
+    <div class="xfy_brand">
+      <span class="xfy_gauge" aria-hidden="true"></span>
+      <span class="xfy_brandName">XFY 字形研究所</span>
+    </div>
+    <a class="xfy_home" href="index.html">返回首页</a>
+  </header>
+
+  <section class="xfy_hero">
+    <div>
+      <p class="xfy_sheetNo">图纸编号 XFY-002</p>
+      <h1 class="xfy_title">坐标纸上的线条</h1>
+      <p class="xfy_lede">
+        Lucide 的每个图标都是一段 <b>SVG 路径</b>，而不是字形。线条干净，粗细随手可调，
+        放到任何尺寸都同样锋利。下面这张图纸里的每一根线，都可以现场修改。
+      </p>
+      <dl class="xfy_facts">
+        <div><dt>工艺</dt><dd>内联 SVG（矢量）</dd></div>
+        <div><dt>制图</dt><dd>本地 lucide.min.js 绘制</dd></div>
+        <div><dt>落笔</dt><dd>data-lucide 属性</dd></div>
+      </dl>
+    </div>
+    <figure class="xfy_heroPlate">
+      <i data-lucide="drafting-compass" aria-hidden="true"></i>
+      <figcaption class="xfy_dim">比例 1:1 单位 px</figcaption>
+    </figure>
+  </section>
+
+  <section class="xfy_console" aria-label="图纸控制台">
+    <div class="xfy_strokeBox">
+      <label class="xfy_ctrlLabel" for="xfy_stroke">线宽</label>
+      <input type="range" id="xfy_stroke" min="0.5" max="3" step="0.25" value="1.75">
+      <output class="xfy_strokeVal" id="xfy_strokeVal" for="xfy_stroke">1.75 px</output>
+    </div>
+    <div class="xfy_sizeBox" role="group" aria-label="图标尺寸">
+      <span class="xfy_ctrlLabel">尺寸</span>
+      <button class="xfy_sizeBtn" type="button" data-xfy-size="32px" aria-pressed="false">32</button>
+      <button class="xfy_sizeBtn" type="button" data-xfy-size="44px" aria-pressed="true">44</button>
+      <button class="xfy_sizeBtn" type="button" data-xfy-size="56px" aria-pressed="false">56</button>
+    </div>
+  </section>
+
+  <main>
+    <section class="xfy_zone">
+      <div class="xfy_zoneHead">
+        <h2><em>区域 A</em>基础图形</h2>
+        <p>六枚</p>
+      </div>
+      <div class="xfy_grid">
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="pen-tool"></i>'><i data-lucide="pen-tool" aria-hidden="true"></i><span class="xfy_cellName">钢笔工具</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="circle"></i>'><i data-lucide="circle" aria-hidden="true"></i><span class="xfy_cellName">圆</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="square"></i>'><i data-lucide="square" aria-hidden="true"></i><span class="xfy_cellName">方</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="triangle"></i>'><i data-lucide="triangle" aria-hidden="true"></i><span class="xfy_cellName">三角</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="hexagon"></i>'><i data-lucide="hexagon" aria-hidden="true"></i><span class="xfy_cellName">六边形</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="ruler"></i>'><i data-lucide="ruler" aria-hidden="true"></i><span class="xfy_cellName">标尺</span></button>
+      </div>
+    </section>
+
+    <section class="xfy_zone">
+      <div class="xfy_zoneHead">
+        <h2><em>区域 B</em>媒体</h2>
+        <p>六枚</p>
+      </div>
+      <div class="xfy_grid">
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="camera"></i>'><i data-lucide="camera" aria-hidden="true"></i><span class="xfy_cellName">相机</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="image"></i>'><i data-lucide="image" aria-hidden="true"></i><span class="xfy_cellName">图像</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="film"></i>'><i data-lucide="film" aria-hidden="true"></i><span class="xfy_cellName">胶片</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="music"></i>'><i data-lucide="music" aria-hidden="true"></i><span class="xfy_cellName">音符</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="mic"></i>'><i data-lucide="mic" aria-hidden="true"></i><span class="xfy_cellName">话筒</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="video"></i>'><i data-lucide="video" aria-hidden="true"></i><span class="xfy_cellName">视频</span></button>
+      </div>
+    </section>
+
+    <section class="xfy_zone">
+      <div class="xfy_zoneHead">
+        <h2><em>区域 C</em>天气</h2>
+        <p>六枚</p>
+      </div>
+      <div class="xfy_grid">
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="sun"></i>'><i data-lucide="sun" aria-hidden="true"></i><span class="xfy_cellName">太阳</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="moon"></i>'><i data-lucide="moon" aria-hidden="true"></i><span class="xfy_cellName">月亮</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="cloud"></i>'><i data-lucide="cloud" aria-hidden="true"></i><span class="xfy_cellName">云</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="cloud-rain"></i>'><i data-lucide="cloud-rain" aria-hidden="true"></i><span class="xfy_cellName">雨</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="snowflake"></i>'><i data-lucide="snowflake" aria-hidden="true"></i><span class="xfy_cellName">雪</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="wind"></i>'><i data-lucide="wind" aria-hidden="true"></i><span class="xfy_cellName">风</span></button>
+      </div>
+    </section>
+
+    <section class="xfy_zone">
+      <div class="xfy_zoneHead">
+        <h2><em>区域 D</em>箭头与操作</h2>
+        <p>六枚</p>
+      </div>
+      <div class="xfy_grid">
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="arrow-right"></i>'><i data-lucide="arrow-right" aria-hidden="true"></i><span class="xfy_cellName">右向</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="arrow-up-right"></i>'><i data-lucide="arrow-up-right" aria-hidden="true"></i><span class="xfy_cellName">右上</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="refresh-cw"></i>'><i data-lucide="refresh-cw" aria-hidden="true"></i><span class="xfy_cellName">刷新</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="download"></i>'><i data-lucide="download" aria-hidden="true"></i><span class="xfy_cellName">下载</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="share-2"></i>'><i data-lucide="share-2" aria-hidden="true"></i><span class="xfy_cellName">分享</span></button>
+        <button class="xfy_cell" data-xfy-code='<i data-lucide="settings-2"></i>'><i data-lucide="settings-2" aria-hidden="true"></i><span class="xfy_cellName">设置</span></button>
+      </div>
+    </section>
+  </main>
+
+  <section class="xfy_usage">
+    <div class="xfy_usageNote">
+      <h3>落笔法</h3>
+      <p>写一个带 data-lucide 属性的 i 标签，页面加载后由脚本替换为内联 SVG。线宽、颜色、尺寸都是普通属性与样式，可以像改一段线条那样改它。</p>
+    </div>
+    <div class="xfy_code">
+      <pre>&lt;<span style="color:#8A5A00">i</span> data-lucide=<span style="color:#1C3A6E">"pen-tool"</span>&gt;&lt;/<span style="color:#8A5A00">i</span>&gt;
+&lt;<span style="color:#8A5A00">script</span>&gt; lucide.<span class="xfy_fn">createIcons</span>(); &lt;/<span style="color:#8A5A00">script</span>&gt;</pre>
+      <p style="font-family:var(--xfy_hei);font-size:12.5px;color:rgba(18,41,79,.6);letter-spacing:.14em;">
+        本页全部图形由 cdn/lucide 下的本地脚本绘制
+      </p>
+    </div>
+  </section>
+
+  <footer class="xfy_titleBlock" aria-label="图纸标题栏">
+    <div><dt>图号</dt><dd>XFY-002</dd></div>
+    <div><dt>图别</dt><dd>图标标本</dd></div>
+    <div><dt>比例</dt><dd>1:1</dd></div>
+    <div><dt>日期</dt><dd>2026-10-23</dd></div>
+    <div><dt>单位</dt><dd>XFY 字形研究所</dd></div>
+    <a href="index.html"><dt>归档</dt><dd>返回首页</dd></a>
+  </footer>
+
+</div>
+
+<div class="xfy_toast" id="xfy_toast" role="status" aria-live="polite"></div>
+
+<script>
+  // 所有 JS 变量以 xfy_ 开头
+  const xfy_toast = document.getElementById('xfy_toast');
+  const xfy_stroke = document.getElementById('xfy_stroke');
+  const xfy_strokeVal = document.getElementById('xfy_strokeVal');
+  let xfy_toastTimer = null;
+
+  // 1. 渲染全部 SVG 图标
+  lucide.createIcons({ attrs: { 'stroke-width': 1.75 } });
+
+  // 2. 线宽滑杆
+  xfy_stroke.addEventListener('input', () => {
+    const xfy_v = xfy_stroke.value;
+    document.documentElement.style.setProperty('--xfy_strokeVal', xfy_v);
+    xfy_strokeVal.textContent = xfy_v + ' px';
+  });
+
+  // 3. 尺寸切换
+  document.querySelectorAll('.xfy_sizeBtn').forEach((xfy_btn) => {
+    xfy_btn.addEventListener('click', () => {
+      document.querySelectorAll('.xfy_sizeBtn').forEach((xfy_b) => xfy_b.setAttribute('aria-pressed', 'false'));
+      xfy_btn.setAttribute('aria-pressed', 'true');
+      document.documentElement.style.setProperty('--xfy_iconSize', xfy_btn.dataset.xfySize);
+    });
+  });
+
+  // 4. 首屏图版：线条绘入（一次性）
+  function xfy_drawIn() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const xfy_svg = document.querySelector('.xfy_heroPlate svg');
+    if (!xfy_svg) return;
+    const xfy_parts = xfy_svg.querySelectorAll('path,circle,line,polyline,polygon');
+    xfy_parts.forEach((xfy_p, xfy_i) => {
+      const xfy_len = xfy_p.getTotalLength();
+      xfy_p.style.strokeDasharray = xfy_len;
+      xfy_p.style.strokeDashoffset = xfy_len;
+      xfy_p.style.transitionDelay = (xfy_i * 0.16) + 's';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => { xfy_p.style.strokeDashoffset = 0; });
+      });
+    });
+    setTimeout(() => {
+      xfy_parts.forEach((xfy_p) => {
+        xfy_p.style.strokeDasharray = '';
+        xfy_p.style.strokeDashoffset = '';
+        xfy_p.style.transitionDelay = '';
+      });
+    }, 2400);
+  }
+  xfy_drawIn();
+
+  // 5. 点击复制
+  async function xfy_copy(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (e) {
+      const xfy_ta = document.createElement('textarea');
+      xfy_ta.value = text;
+      document.body.appendChild(xfy_ta);
+      xfy_ta.select();
+      document.execCommand('copy');
+      xfy_ta.remove();
+    }
+  }
+  function xfy_showToast(msg) {
+    xfy_toast.textContent = msg;
+    xfy_toast.classList.add('xfy_show');
+    clearTimeout(xfy_toastTimer);
+    xfy_toastTimer = setTimeout(() => xfy_toast.classList.remove('xfy_show'), 1600);
+  }
+  document.querySelectorAll('.xfy_cell').forEach((xfy_btn) => {
+    xfy_btn.addEventListener('click', () => {
+      const xfy_name = xfy_btn.querySelector('.xfy_cellName').textContent;
+      xfy_copy(xfy_btn.dataset.xfyCode).then(() => {
+        xfy_showToast('已复制「' + xfy_name + '」的写法');
+      });
+    });
+  });
+</script>
+</body>
+</html>

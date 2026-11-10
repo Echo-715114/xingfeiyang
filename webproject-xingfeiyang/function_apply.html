@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抓小球游戏|函数的三个方法的应用</title>
+    <style>
+        body{
+            background: #f0f8ff;
+            height: 100vh;
+            overflow: hidden;
+            font-size: 24px;}
+        #info{
+            padding: 16px;
+            background: #222;
+            color: #fff;
+        }
+        .ball{
+            width: 50px;
+            height: 50px;
+            background: red;
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">当前分数：<span id="score">0</span></div>
+
+    <script> 
+    // const是常量指的是变量的引用地址不能变，不是对象里面的数据不能改。
+    const game = {
+        score: 0,
+        ballList: [],/*【新增】数组，存放3个小球DOM元素，方便统一管理小球*/
+        width: 50,
+        height: 50,
+        ballCount:3,/*【新增】定义小球总数量固定3个*/
+        timer:null,/*【新增】保存定时器，控制每轮3.5秒倒计时*/
+        hitCount:0 /*【新增】本轮击中小球计数器，记录当前轮已经点到几个小球*/
+    };
+
+    function moveBall(ballDom){
+        const maxX = window.innerWidth - game.width;
+        const maxY = window.innerHeight - game.height;
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+        ballDom.style.left = randomX + "px";
+        ballDom.style.top = randomY + "px";
+        return {x:randomX,y:randomY,w:game.width,h:game.height};
+    }
+
+    /*【新增函数】isOverlap() 碰撞检测函数：
+    功能：判断两个小球矩形区域是否重叠交叉
+    原理：矩形不重叠判断规则，取反得到重叠结果；保证生成小球位置不会互相盖住
+    参数：rectA、rectB 两个小球的位置尺寸对象
+    返回值：true=重叠，false=不重叠
+    */
+    function isOverlap(rectA,rectB){
+        return !(
+            rectA.x + rectA.w < rectB.x ||
+            rectB.x + rectB.w < rectA.x ||
+            rectA.y + rectA.h < rectB.y ||
+            rectB.y + rectB.h < rectA.y
+        )
+    }
+
+    /*【新增函数】moveAllBalls() 一次性重排全部小球
+    功能：生成3个互不重叠小球位置，重置本轮游戏状态
+    逻辑：循环创建小球位置，如果新位置和已存在小球重叠，则重新生成；
+    全部小球摆放完成后，把所有小球恢复显示，清空本轮击中计数hitCount，开启新一轮
+    */
+    function moveAllBalls(){
+        const posList = [];
+        for(let i=0;i<game.ballCount;i++){
+            let newPos;
+            // 循环直到找到不重叠的坐标
+            while(true){
+                newPos = moveBall(game.ballList[i]);
+                let hasOverlap = false;
+                for(let j=0;j<posList.length;j++){
+                    if(isOverlap(newPos, posList[j])){
+                        hasOverlap = true;
+                        break;
+                    }
+                }
+                if(!hasOverlap) break;
+            }
+            posList.push(newPos);
+            game.ballList[i].style.display = "block"; //小球恢复可见
+        }
+        game.hitCount = 0; //重置本轮击中数量，新一轮开始
+    }
+
+    
+    function updateScore(){
+        document.getElementById("score").innerText = game.score;
+    }
+
+    /*【新增函数】createBalls() 创建3个小球DOM并绑定点击事件
+    功能：动态生成小球div，存入ballList数组；给每个小球绑定点击事件
+    点击小球逻辑：
+        1.阻止事件冒泡，防止触发空白点击扣分
+        2.如果小球已经隐藏（本轮点过），直接返回，不重复计数
+        3.点到小球→隐藏小球，hitCount+1
+        4.判断hitCount等于总小球数3，代表本轮全部抓完，分数+2
+    */
+    function createBalls(){
+        for(let i=0;i<game.ballCount;i++){
+            const div = document.createElement("div");
+            div.className = "ball";
+            document.body.appendChild(div);
+            game.ballList.push(div);
+
+            // 小球点击事件
+            div.addEventListener("click", function(e){
+                e.stopPropagation();
+                if(this.style.display === "none") return; 
+                this.style.display = "none"; 
+                game.hitCount++;
+
+                if(game.hitCount === game.ballCount){
+                    game.score += 2;
+                    updateScore();
+                }
+            });
+        }
+    }
+
+    //点击页面空白区域扣分
+    document.body.addEventListener("click", function(e){
+        console.log("点击空白区域！");
+            game.score -= 1;
+            console.log("点击的是：", game.score);
+            updateScore();
+    });
+
+    //窗口大小改变，重新排布小球
+    window.addEventListener("resize", function(){
+        moveAllBalls();
+    });
+
+    /*【新增函数】startTimer() 开启3.5秒一轮定时器
+    功能：设置定时器，每3500ms执行一轮结算
+    逻辑：
+        1.时间到，先判断本轮小球有没有全部点完
+        2. hitCount不足3 → 本轮失败，分数-1
+        3.调用moveAllBalls()，重置所有小球位置，开启新一轮游戏
+    */
+    function startTimer(){
+        game.timer = setInterval(()=>{
+            if(game.hitCount < game.ballCount){
+                game.score -=1;
+                updateScore();
+            }
+            moveAllBalls();
+        },3500); //3500毫秒 = 3.5秒一轮
+    }
+
+    //【初始化执行代码，程序入口】
+    createBalls();//【新增】调用函数创建小球
+    moveAllBalls();//【修改】调用函数摆放小球
+    startTimer();//【新增】调用函数启动定时器
+
+    </script>
+</body>
+</html>

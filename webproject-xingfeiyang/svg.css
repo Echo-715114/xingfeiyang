@@ -1,0 +1,78 @@
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.tab-nav{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    /* 垂直居中 */
+    align-items: center;
+    background-color: #fff;
+    width: 100%;
+    border-top: 1px solid #eee;
+}
+.tab-item{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    position: relative;
+}
+.tab-item svg{
+    font-size: 24px;
+    margin:5px;
+}
+.tab-item.active{
+    color: red;
+}
+.budge-dot{
+    position: absolute;
+    top: 4px;
+    right: 24px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: red;
+}
+.budge-num{
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    background-color: red;
+    color: #fff;
+    padding: 0px 4px;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 9px;
+    /* 文字水平居中： */
+    text-align: center;
+    line-height: 20px;
+    /* height: 20px; 加 line-height: 20px;——垂直居中 */
+}
+.budge-border{
+    position: absolute;
+    top: 2px;
+    right: 18px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid black;
+    border-radius: 50%;
+    background-color: red;
+}
+/* 交集选择器 无空格*/
+.budge-num.max{
+    font-size: 10px;
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件的冒泡与捕获</title>
+    <style>
+        .box {
+            width: 400px;
+            height: 400px;
+            background-color: red;
+        }
+        #h2 {
+            width: 200px;
+            height: 200px;
+            background-color: blue;
+        }
+        #em {
+            width: 100px;
+            height: 100px;
+            background-color: yellow;
+        }
+    </style>
+    <!-- 冒泡：事件会从最里层开始，逐层向上传播，直到document对象。
+     ——冒泡是从子元素到父元素依次触发 
+     捕获：事件会从最外层开始，逐层向下传播。先出发父元素，再触发子元素
+-->
+</head>
+<body>
+    <button  id="myButton" onclick="clickFun()">点击事件</button>
+    <div class="box" id="box">
+        <h2 id="h2">是冒泡还是<em id="em">捕获</em></h2>
+    </div>
+    <input type="text" id="input" placeholder="请输入内容">
+    <script>
+        function clickFun() {
+            alert("点击事件");
+        }
+
+        var box = document.getElementById("box");
+//只有id选择器可以直接使用box，也就是上面的获取元素可以省        
+        box.addEventListener("click", function () {
+            alert("box");
+        }, false); //false表示冒泡，true表示捕获
+        var h2 = document.getElementById("h2");
+        h2.addEventListener("click", function () {
+            alert("h2");
+        }, false);
+        var em = document.getElementById("em");
+        em.addEventListener("click", function (e) {
+            alert("em"); 
+            e.stopPropagation(); //阻止事件冒泡
+        }, false);
+       box.addEventListener("mousemove", function (e) {
+       //clientX和clientY是鼠标相对于浏览器窗口的坐标
+       h2.innerHTML = "鼠标在盒子内移动的坐标是：" +
+       e.clientX + "," + e.clientY + "相对于父元素的坐标是："
+       + (e.offsetX) + "," + (e.offsetY);
+       }, true);
+       input.addEventListener("keydown", function (e) {
+       alert("你按下了" + e.key + "键");
+       }, false);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>抓小球</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="top-bar">
+      <h1 class="brand">抓小球</h1>
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-label">分数</span>
+          <span class="stat-value" id="score">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">剩余</span>
+          <span class="stat-value stat-value--time" id="time">02:00</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="game-area" id="gameArea">
+      <div class="ball" id="ball" hidden></div>
+
+      <section class="overlay" id="startOverlay">
+        <div class="card">
+          <h2 class="card-title">抓小球</h2>
+          <p class="card-text">2 分钟内点击蓝色小球，每中 +2 分，点空 -1 分。</p>
+          <button class="btn" id="startBtn" type="button">开始游戏</button>
+        </div>
+      </section>
+
+      <section class="overlay" id="countdownOverlay" hidden>
+        <div class="countdown-number" id="countdownNumber">3</div>
+      </section>
+
+      <section class="overlay" id="resultOverlay" hidden>
+        <div class="card">
+          <h2 class="card-title">时间到</h2>
+          <p class="result-line">本局得分 <strong class="result-score" id="finalScore">0</strong></p>
+          <p class="result-line">历史最高 <strong id="bestScore">0</strong></p>
+          <p class="record-tip" id="newRecord" hidden>新纪录！</p>
+          <button class="btn" id="restartBtn" type="button">再来一局</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="hint">点击小球 +2 · 点击空白 -1 · 限时 2 分钟</footer>
+  </div>
+  <script src="js/game.js"></script>
+</body>
+</html>

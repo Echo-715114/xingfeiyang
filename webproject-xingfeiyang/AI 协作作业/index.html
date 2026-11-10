@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<!--
+  ============================================
+  作者：邢菲洋
+  建立时间：2026-11-10
+  使用大模型：GLM-5.3-Flash
+  功能名称：AI 协作作业总入口（Swiper 三任务导航 + 提示词记录查看）
+  ============================================
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 协作作业 · Swiper 三任务 · 邢菲洋</title>
+  <style>
+    /* 全部类名以 xfy_ 开头（项目规则） */
+    :root{
+      --xfy_ink:#1f2430;      /* 墨色 */
+      --xfy_red:#c8392b;      /* 朱红 */
+      --xfy_paper:#f6f4ef;    /* 纸色 */
+      --xfy_line:#d8d2c4;     /* 分隔线 */
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:"Noto Serif SC","SimSun",serif;
+      background:var(--xfy_paper);
+      color:var(--xfy_ink);
+      line-height:1.75;
+      padding:48px 20px 60px;
+    }
+    .xfy_wrap{max-width:880px;margin:0 auto}
+    .xfy_head{border-bottom:3px double var(--xfy_line);padding-bottom:20px;margin-bottom:32px}
+    .xfy_head h1{font-size:30px;letter-spacing:2px}
+    .xfy_head h1 b{color:var(--xfy_red)}
+    .xfy_head p{color:#6b6656;margin-top:8px;font-size:14px}
+    .xfy_task{
+      background:#fff;
+      border:1px solid var(--xfy_line);
+      border-left:5px solid var(--xfy_red);
+      padding:22px 26px;margin-bottom:22px;
+    }
+    .xfy_task h2{font-size:19px;margin-bottom:10px}
+    .xfy_task h2 small{font-weight:normal;color:#8a8471;font-size:13px;margin-left:8px}
+    .xfy_task ul{padding-left:22px;font-size:14.5px}
+    .xfy_task li{margin:5px 0}
+    .xfy_link{
+      display:inline-block;margin-top:12px;
+      color:var(--xfy_red);text-decoration:none;
+      border-bottom:1px dashed var(--xfy_red);font-size:14.5px;
+    }
+    .xfy_link:hover{opacity:.75}
+    .xfy_verify{margin-top:14px;padding-top:12px;border-top:1px dashed var(--xfy_line)}
+    .xfy_verify h3{font-size:15px;color:var(--xfy_red);margin-bottom:8px}
+    .xfy_verify p{font-size:14px;margin-bottom:10px}
+    .xfy_shots{display:flex;gap:12px;flex-wrap:wrap}
+    .xfy_shot{flex:1 1 300px;max-width:420px;background:#fff;border:1px solid var(--xfy_line);padding:8px}
+    .xfy_shot img{width:100%;display:block;border:1px solid var(--xfy_line)}
+    .xfy_shot figcaption{font-size:12.5px;color:#6b6656;margin-top:6px;text-align:center}
+    .xfy_back{
+      margin-top:34px;text-align:center;font-size:14px;
+    }
+    .xfy_back a{color:var(--xfy_ink);text-decoration:none;border-bottom:1px solid var(--xfy_line)}
+    .xfy_back a:hover{color:var(--xfy_red);border-color:var(--xfy_red)}
+  </style>
+</head>
+<body>
+  <div class="xfy_wrap">
+    <header class="xfy_head">
+      <h1>AI 协作作业 · <b>Swiper 三任务</b></h1>
+      <p>作者：邢菲洋 · 24002120117 · 使用模型 GLM-5.3-Flash · 提交日期 2026-11-10（截止 11.11 前）</p>
+    </header>
+
+    <section class="xfy_task">
+      <h2>任务一 · 提示词工程师<small>两轮迭代 · 让 AI 听懂需求</small></h2>
+      <ul>
+        <li>第 1 轮：笼统提示词（漏说「初始效果为 cube」）——AI 给的配置缺 effect，轮播是平推</li>
+        <li>第 2 轮：逐条拆解四条需求——AI 给出完整正确配置，四条全达标</li>
+        <li>反思：提示词漏一条需求，AI 就少实现一条——它只对我说的负责</li>
+      </ul>
+      <a class="xfy_link" href="提示词记录.md#任务一">查看两轮提示词与 AI 回答 →</a>
+      <div class="xfy_verify">
+        <h3>✅ 页面验证截图（粘入控制台亲自验证）</h3>
+        <p><b>第 1 轮结论</b>：循环、3.2 秒自动翻页不停止、圆点可点三项均正常，但轮播始终是平推——代码里没有 <code>effect: 'cube'</code>，需求④不达标。</p>
+        <p><b>第 2 轮结论</b>：逐条补全提示词后，轮播立即呈现 3D 立方体旋转，且自动翻页与圆点跳转保持正常，四条需求全部达标。</p>
+        <div class="xfy_shots">
+          <figure class="xfy_shot">
+            <img src="验证截图/任务一-第1轮-缺cube不达标.png" alt="第 1 轮验证：平推无立方体">
+            <figcaption>第 1 轮 · 缺 effect —— 平推，需求④不达标</figcaption>
+          </figure>
+          <figure class="xfy_shot">
+            <img src="验证截图/任务一-第2轮-cube达标.png" alt="第 2 轮验证：cube 立方体达标">
+            <figcaption>第 2 轮 · 补全提示词 —— cube 旋转，四条全达标</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="xfy_task">
+      <h2>任务二 · creative 第 7 种效果<small>课堂没讲 · AI 教我</small></h2>
+      <ul>
+        <li>配合 AI 读懂官网 creative 演示的 transform 写法</li>
+        <li>效果：上一张缩小左移带角度，下一张放大右移——像电影选片墙</li>
+        <li>已加入作业页任务 4 按钮排：第 7 个按钮「creative 电影片」</li>
+        <li>答辩预演：transform 百分比相对 slide 自身宽高；rotate 第三项改 20 即转 20 度</li>
+      </ul>
+      <a class="xfy_link" href="提示词记录.md#任务二">查看四轮提示词与 AI 回答 →</a>
+      <a class="xfy_link" href="../swiper-task.html#sec4">去作业页点第 7 个按钮看效果 →</a>
+      <div class="xfy_verify">
+        <h3>✅ 页面验证截图（点第 7 按钮 + 控制台改数值实验）</h3>
+        <p><b>5° 正式版</b>：点「creative 电影片」后，上一张缩小左移斜靠、下一张带角度放大进场，自动翻页正常——电影选片墙成型。</p>
+        <p><b>15° 实验</b>：控制台只改 rotate 第 3 个值（5 → 15），歪斜立刻明显加大——印证「rotate 第三项 = 绕屏幕平面的旋转角」。</p>
+        <div class="xfy_shots">
+          <figure class="xfy_shot">
+            <img src="验证截图/任务二-5度电影墙.png" alt="任务二：5 度电影选片墙">
+            <figcaption>5° · 点第 7 按钮触发 —— 上一张斜靠缩小，下一张放大进场</figcaption>
+          </figure>
+          <figure class="xfy_shot">
+            <img src="验证截图/任务二-15度实验对比.png" alt="任务二：rotate 改 15 度对比实验">
+            <figcaption>15° · 控制台只改 rotate 一个数值 —— 歪斜立刻放大</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="xfy_task">
+      <h2>任务三 · 第六件作品 + 双击缩放<small>综合创作 · 超级加分项</small></h2>
+      <ul>
+        <li>第六件作品「爱达·魔都号」：AI 生成横版 16:9 首图，slide 结构完整，已加入全部 4 个展台</li>
+        <li>新增能力：zoom 双击缩放（minRatio 1 / maxRatio 3），课堂未讲——双击放大、再双击还原、放大后拖动看细节</li>
+        <li>第 2 轮踩坑：AI 初答只给 zoom 配置、没说 swiper-zoom-container——粘进页面双击没反应且不报错</li>
+        <li>第 3 轮排查：补上容器包裹后 zoom 生效——"不报错但没反应"最容易漏，记入答辩素材</li>
+      </ul>
+      <a class="xfy_link" href="提示词记录.md#任务三">查看两轮提示词与 AI 回答 →</a>
+      <a class="xfy_link" href="../swiper-task.html">去作业页验证（滚到演示四双击图片）→</a>
+      <div class="xfy_verify">
+        <h3>✅ 页面验证截图（双击放大 + 拖动看细节）</h3>
+        <p><b>结论</b>：双击图片放大到 3 倍，视野可拖动平移看清船体细节，说明条保持原位不变形——证明缩放只作用于 swiper-zoom-container 内的图片；再双击还原，切效果按钮后缩放依然生效。</p>
+        <div class="xfy_shots">
+          <figure class="xfy_shot">
+            <img src="验证截图/任务三-zoom双击放大.png" alt="任务三：zoom 双击放大 3 倍">
+            <figcaption>第一次双击 · 放大 3 倍 —— 拖动平移看船体细节，说明条不变形</figcaption>
+          </figure>
+          <figure class="xfy_shot">
+            <img src="验证截图/任务三-zoom双击还原.png" alt="任务三：再双击还原原尺寸">
+            <figcaption>第二次双击 · 还原 —— 整船全景复位（爱达·魔都号 AI 首图）</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <div class="xfy_back">
+      <a href="../index.html">← 返回课堂实践中心</a>
+      　<a href="提示词记录.md">提示词记录（md）</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG图标</title>
+<script src="https://at.alicdn.com/t/c/font_5231903_sit1n2twnir.js"></script>
+<link rel="stylesheet" href="./svg.css">
+</head>
+<body>
+    <h3>SVG图标</h3>
+    <div class="tab-nav">
+        <div class="tab-item active" onclick="changeTab(this)">
+            <svg class="icon" aria-hidden="true">
+               <use xlink:href="#icon-shouye"></use>
+         </svg>
+         <span>首页</span>
+         <!-- div.budge-dot回车 -->
+         <!-- 红点 -->
+         <div class="budge-dot" id="budge-home"></div>
+        </div>
+
+     <div class="tab-item" onclick="changeTab(this)">
+            <svg class="icon" aria-hidden="true">
+               <use xlink:href="#icon-xihuan"></use>
+         </svg>
+         <span>喜欢</span>
+         <!-- 数字红点 -->
+            <div class="budge-num" id="budge-plan">6</div>
+        </div>
+
+     <div class="tab-item" onclick="changeTab(this)">
+            <svg class="icon" aria-hidden="true">
+               <use xlink:href="#icon-shoucang"></use>
+         </svg>
+         <span>收藏</span>
+         <!-- 边框红点 -->
+         <div class="budge-border" id="budge-collect"></div>
+        </div>
+
+     <div class="tab-item" onclick="changeTab(this)">
+            <svg class="icon" aria-hidden="true">
+               <use xlink:href="#icon-wode1"></use>
+         </svg>
+         <span>我的</span>
+         <!-- 红点 有最大显示-->
+         <div class="budge-num max" id="budge-my">100+</div>
+        </div>
+        
+    </div>
+      <script>
+        // 写一个函数，当我点击当天的item时候，颜色发生变化
+        function changeTab(current) {
+            let tabs = document.querySelectorAll(".tab-item");
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove("active");
+            }
+        // 给当前点击加上高光
+            current.classList.add("active");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        div{
+            width: 180px;
+            height: 180px;
+            background-color: red;
+            margin: 10px; 
+            color: white; 
+            text-align: center; 
+            line-height: 180px; 
+            font-size: 100px; 
+            float:left;
+        }
+        /* 回文数单独样式：蓝色背景 */
+        .palindrome{
+            background-color: blue;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据类型与运算符</title>
+</head>
+<body>
+    <script>
+        var a = 6;
+        var b = 1;
+        console.log(a+b);
+        console.log(a++,++b);
+        // 先输出a的值，再自增1;b先自增1，再输出b的值
+
+        console.log(a-b>0?a:b);
+        // ?前面为真，取冒号前的a(此时a运行加一了)
+
+        console.log(true&&false,true||false,!true);
+        // &&:and  ||:or  !:not(取反)
+
+        var str = "hello world",num=123,bl=true,obj={name:"张三",age:18},ud,kong=null;
+        console.log(typeof str,typeof num,typeof bl,typeof obj,typeof ud,typeof kong);
+        console.log(0.1+0.2==0.3);
+        // JS 不能用“==”或“===” 判定浮点数是否相等，(因为不能用二进制存储)。
+
+        console.log(1+"1","1"-1,"11"+1-1);
+        // 数据类型转换，+号时将数字转换成字符串，-只能用于数值运算。
+
+        console.log("wangyao"-1);
+        // NaN:Not a Number 不是数字,与任何变量都不相等，包括它自己。
+
+        console.log(isNaN(NaN));
+        // isNaN()函数判断变量是否为NaN
+        console.log(NaN==NaN,null==null);
+
+        console.log(parseInt(123.45));
+        // parseInt向下取整数部分
+        var num=123;
+        console.log(num==parseInt(num));
+        console.log(parseInt(100,16));
+
+        // 1到100求和:
+        var sum=0;
+        for(var i=1;i<=100;i++);{
+            sum+=i;
+            // sum=sum+i
+        };
+
+        // 数7，（含7，7倍数 不显示数字。最大到99）
+        for(var i=1;i<100;i++){
+            if(i%7==0||i%10==7||parseInt(i/10)==7){
+                document.write("<div></div>");
+            }
+        else{
+                document.write("<div>"+i+"</div>");
+        }}
+        
+        // 作业：回文数显示（个位十位一样的特殊显示出来。范围1——99）：
+        document.write("<hr>");
+        for(var i=1;i<=99;i++){
+            // 取出十位、个位
+            var shi = parseInt(i / 10);
+            var ge = i % 10;
+            if(shi === ge){
+                // 个位和十位相等 蓝色
+                document.write('<div class="palindrome">'+i+'</div>');
+            }else{
+                // 普通数字 红色
+                document.write('<div>'+i+'</div>');
+            }
+        }
+    </script>
+</body>
+</html>

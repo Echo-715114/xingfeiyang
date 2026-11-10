@@ -1,0 +1,51 @@
+/* 作者：邢菲洋 学号：24002120117 高级网页设计I */
+/* 全局重置、移动端优先 */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+html,body{
+    height: 100%;
+    background-color: #ffffff;
+    font-size: 16px;
+    /* 禁止移动端双击缩放 */
+    touch-action: manipulation;
+}
+ul{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.xfy_icon{
+    font-size:22px;
+    vertical-align: middle;
+}
+
+/* ========== 顶部蓝色导航栏 全局复用 ========== */
+.xfy_topbar{
+    width:100%;
+    height:56px;
+    background-color:#2185d0;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    padding:0 16px;
+    color:#fff;
+    position:sticky;
+    top:0;
+    z-index:99;
+}
+.xfy_topbar_title{
+    font-size:20px;
+    font-weight:500;
+}
+.xfy_topbar_left,.xfy_topbar_right{
+    display:flex;
+    gap:20px;
+    align-items:center;
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!--
+  作者：邢菲洋
+  建立时间：2026-11-04
+  使用大模型：GLM-5.3-Flash
+  功能名称：视频TOP10排行榜（每日/每周/每月/全部选项卡）
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>视频排行 TOP10</title>
+  <link rel="stylesheet" href="css/xfy_top10.css">
+</head>
+<body>
+  <div class="xfy_page">
+    <!-- 视频排行卡片：tab 栏 + 榜单面板 -->
+    <section class="xfy_top10" id="xfy_top10Card">
+      <!-- 选项卡栏：每日为默认选中 -->
+      <div class="xfy_tab-bar">
+        <div class="xfy_tab-item xfy_active" data-xfy-tab="xfy_day">每日</div>
+        <div class="xfy_tab-item" data-xfy-tab="xfy_week">每周</div>
+        <div class="xfy_tab-item" data-xfy-tab="xfy_month">每月</div>
+        <div class="xfy_tab-item" data-xfy-tab="xfy_all">全部</div>
+      </div>
+
+      <!-- 每日榜 -->
+      <div class="xfy_tab-panel xfy_active" id="xfy_day">
+        <ul class="xfy_rank-list">
+          <li class="xfy_rank-item"><i class="xfy_rank-num xfy_top1">1</i>最美的时光</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num xfy_top2">2</i>咱们结婚吧</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num xfy_top3">3</i>渗透</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">4</i>继承者们</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">5</i>烽火佳人</li>
+        </ul>
+        <ul class="xfy_rank-list">
+          <li class="xfy_rank-item"><i class="xfy_rank-num">6</i>极品女士第2季</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">7</i>爱闪亮</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">8</i>狼烟（2013）</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">9</i>铁血武工队传奇</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">10</i>苍狼</li>
+        </ul>
+      </div>
+
+      <!-- 每周榜 -->
+      <div class="xfy_tab-panel" id="xfy_week">
+        <ul class="xfy_rank-list">
+          <li class="xfy_rank-item"><i class="xfy_rank-num xfy_top1">1</i>咱们结婚吧</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num xfy_top2">2</i>继承者们</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num xfy_top3">3</i>最美的时光</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">4</i>爱闪亮</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">5</i>渗透</li>
+        </ul>
+        <ul class="xfy_rank-list">
+          <li class="xfy_rank-item"><i class="xfy_rank-num">6</i>狼烟（2013）</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">7</i>三十年，你好</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">8</i>铁血武工队传奇</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">9</i>特种兵之火凤凰</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">10</i>极品女士第2季</li>
+        </ul>
+      </div>
+
+      <!-- 每月榜 -->
+      <div class="xfy_tab-panel" id="xfy_month">
+        <ul class="xfy_rank-list">
+          <li class="xfy_rank-item"><i class="xfy_rank-num xfy_top1">1</i>特种兵之火凤凰</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num xfy_top2">2</i>咱们结婚吧</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num xfy_top3">3</i>继承者们</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">4</i>金玉满堂</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">5</i>王的女人</li>
+        </ul>
+        <ul class="xfy_rank-list">
+          <li class="xfy_rank-item"><i class="xfy_rank-num">6</i>爱闪亮</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">7</i>爱情面前谁怕谁</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">8</i>英雄联盟</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">9</i>小爸爸</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">10</i>我们这拨人</li>
+        </ul>
+      </div>
+
+      <!-- 全部榜 -->
+      <div class="xfy_tab-panel" id="xfy_all">
+        <ul class="xfy_rank-list">
+          <li class="xfy_rank-item"><i class="xfy_rank-num xfy_top1">1</i>永不磨灭的番号</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num xfy_top2">2</i>特种兵之火凤凰</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num xfy_top3">3</i>新还珠格格</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">4</i>咱们结婚吧</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">5</i>小爸爸</li>
+        </ul>
+        <ul class="xfy_rank-list">
+          <li class="xfy_rank-item"><i class="xfy_rank-num">6</i>心术</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">7</i>乡村爱情5</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">8</i>天天有喜</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">9</i>一不小心爱上你</li>
+          <li class="xfy_rank-item"><i class="xfy_rank-num">10</i>夏日甜心</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/xfy_tab.js"></script>
+</body>
+</html>

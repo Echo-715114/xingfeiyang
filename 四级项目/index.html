@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<!-- iPhone16必须 viewport-fit=cover，Safari布局才稳定 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>Days Matter · 倒数日 首页</title>
+
+<!-- 本地文件夹引入，已更新为你新的iconfont.js路径 -->
+<script src="images/font_5244147_o2xw7xghiud/iconfont.js"></script>
+
+<style>
+*{
+    box-sizing: border-box;
+}
+
+html, body{
+    margin:0;
+    padding:0;
+    background-color:#f3f3f3;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+.xfy_topbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:56px;
+    background:#2185d0;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 16px;
+    padding-top:env(safe-area-inset-top);
+    z-index:10;
+}
+
+.xfy_topbar_left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:20px;
+}
+
+.xfy_topbar_right{
+    display:flex;
+    gap:22px;
+    font-size:20px;
+}
+
+.xfy_topbar_right .icon{
+    font-size:22px;
+}
+
+.xfy_main_wrap{
+    padding-top:56px;
+    padding-bottom:calc(60px + env(safe-area-inset-bottom));
+    background-color:#f3f3f3;
+}
+
+.xfy_big_card{
+    background:#fff;
+    padding:14px 18px;
+    border-radius:0;
+    margin:0;
+    border-bottom:1px solid #dddddd;
+    position:relative; /* iOS必须保留，作为红色标签定位父级 */
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.xfy_big_left{
+    width:44%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.xfy_big_title{
+    font-size:25px;
+    font-weight:600;
+    color:#111;
+    letter-spacing:0.5px;
+    margin-bottom:4px;
+}
+
+.xfy_big_sub{
+    font-size:18px;
+    color:#777;
+    line-height:1.4;
+    white-space:pre-line;
+    letter-spacing:0.3px;
+}
+
+.xfy_big_right{
+    width:56%;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    padding-left:40px;
+    position:relative;
+}
+
+.xfy_big_day_num{
+    font-size:48px;
+    font-weight:600;
+    color:#111;
+    line-height:1;
+    letter-spacing:1px;
+}
+
+/* ========== 红色Days标签 重点修改 ========== */
+.xfy_big_day_tag{
+    position:absolute;
+    top:50%;
+    right:8px; /* 增大这个值，标签往右；减小往左。真机iPhone16刷新调试 */
+    transform:translateY(-50%);
+    background:#ef4444;
+    color:#fff;
+    padding:4px 7px;
+    border-radius:5px;
+    font-weight:bold;
+    font-size:13px;
+    line-height:1;
+}
+
+.xfy_item_list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin:16px;
+}
+
+.xfy_item_row{
+    display:flex;
+    justify-content:space-between;
+    align-items:stretch;
+    background:#ffffff;
+    border-radius:8px;
+    overflow:hidden;
+    height:40px;
+}
+
+.xfy_item_text{
+    flex:1;
+    font-size:19px;
+    font-weight:600;
+    color:#111;
+    padding:0 14px;
+    display:flex;
+    align-items:center;
+}
+
+.xfy_item_table{
+    display:table;
+    border-collapse: collapse;
+    height:100%;
+}
+
+.xfy_item_num{
+    background:#f29c30;
+    color:#fff;
+    padding:0 12px;
+    font-size:21px;
+    font-weight:bold;
+    text-align:center;
+    border:none;
+    display:table-cell;
+    vertical-align:middle;
+    height:100%;
+}
+
+.xfy_item_unit{
+    background:#f2711c;
+    color:#fff;
+    padding:0 10px;
+    font-size:20px;
+    font-weight:bold;
+    text-align:center;
+    border:none;
+    display:table-cell;
+    vertical-align:middle;
+    height:100%;
+}
+
+.xfy_bottom_nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:60px;
+    background:#fff;
+    border-top:1px solid #eee;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index:15;
+}
+
+.xfy_bottom_nav_item{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:100%;
+    cursor:pointer;
+}
+
+.xfy_bottom_nav_item .icon{
+    font-size:32px;
+    width:32px;
+    height:32px;
+    color:#666;
+}
+
+.xfy_bottom_nav_item.active .icon{
+    color:#2185d0;
+}
+
+.overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+    background:rgba(0,0,0,0.35);
+    z-index:20;
+    opacity:0;
+    visibility:hidden;
+    transition: opacity 0.3s ease;
+}
+
+.overlay.open{
+    opacity:1;
+    visibility:visible;
+}
+
+.menu-iframe{
+    position:absolute;
+    top:0;
+    left:0;
+    width:86%;
+    max-width:420px;
+    height:100%;
+    border:none;
+    transform:translateX(-100%);
+    transition:transform 0.3s ease;
+}
+
+.overlay.open .menu-iframe{
+    transform:translateX(0);
+}
+</style>
+</head>
+
+<body>
+
+<div class="xfy_topbar">
+    <div class="xfy_topbar_left">
+        <span id="openMenu" style="font-size:22px;cursor:pointer;">☰</span>
+        <span>Days Matter · 倒数日</span>
+    </div>
+    <div class="xfy_topbar_right">
+        <!-- 更多图标 icon-gengduo -->
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-gengduo"></use>
+        </svg>
+        <!-- 加号图标 icon-jiahao，保留id="plusBtn"，点击事件不变 -->
+        <svg id="plusBtn" class="icon" aria-hidden="true">
+            <use xlink:href="#icon-jiahao"></use>
+        </svg>
+    </div>
+</div>
+
+<div class="xfy_main_wrap">
+    <div class="xfy_big_card">
+        <div class="xfy_big_left">
+            <div class="xfy_big_title">爱72625已经</div>
+            <div class="xfy_big_sub">起始日: 2020-1-14星期二</div>
+        </div>
+
+        <div class="xfy_big_right">
+            <span class="xfy_big_day_num">2467</span>
+            <span class="xfy_big_day_tag">Days</span>
+        </div>
+    </div>
+
+    <div class="xfy_item_list">
+        <div class="xfy_item_row">
+            <div class="xfy_item_text">累积关注阿彩已经</div>
+            <table class="xfy_item_table">
+                <tr>
+                    <td class="xfy_item_num">2279</td>
+                    <td class="xfy_item_unit">天</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="xfy_item_row">
+            <div class="xfy_item_text">距上次Gr正赛夺冠已经</div>
+            <table class="xfy_item_table">
+                <tr>
+                    <td class="xfy_item_num">2356</td>
+                    <td class="xfy_item_unit">天</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="xfy_item_row">
+            <div class="xfy_item_text">喜欢ppx 已经</div>
+            <table class="xfy_item_table">
+                <tr>
+                    <td class="xfy_item_num">2357</td>
+                    <td class="xfy_item_unit">天</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="xfy_item_row">
+            <div class="xfy_item_text">爱72625已经</div>
+            <table class="xfy_item_table">
+                <tr>
+                    <td class="xfy_item_num">2467</td>
+                    <td class="xfy_item_unit">天</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="xfy_bottom_nav">
+    <div class="xfy_bottom_nav_item active">
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-a-500576554"></use>
+        </svg>
+    </div>
+    <div class="xfy_bottom_nav_item">
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-a-500573250"></use>
+        </svg>
+    </div>
+    <div class="xfy_bottom_nav_item">
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-a-500573249"></use>
+        </svg>
+    </div>
+    <div class="xfy_bottom_nav_item">
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-a-500573251"></use>
+        </svg>
+    </div>
+    <div class="xfy_bottom_nav_item">
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-qita"></use>
+        </svg>
+    </div>
+</div>
+
+<div class="overlay" id="overlay">
+    <iframe class="menu-iframe" src="menu.html"></iframe>
+</div>
+
+<script>
+const openBtn = document.getElementById('openMenu');
+const overlay = document.getElementById('overlay');
+
+openBtn.onclick = function(){
+    overlay.classList.toggle('open');
+}
+
+overlay.onclick = function(e){
+    if(e.target === overlay){
+        overlay.classList.remove('open');
+    }
+}
+
+window.addEventListener('message',function(e){
+    if(e.data === 'closeMenu'){
+        overlay.classList.remove('open');
+    }
+})
+
+// plusBtn现在是svg图标，id保留，跳转逻辑不变
+document.getElementById('plusBtn').onclick = function(){
+    location.href = "add.html";
+}
+</script>
+
+</body>
+</html>

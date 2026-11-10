@@ -238,3 +238,17 @@
 - **说明**：作业文件移入 webproject-xingfeiyang；同步挪 js/cdn/swiper-imgs；根 index.html 重建为站点入口跳转页；两仓库重新提交推送
 
 ---
+
+## 2026-11-08 13:20:00
+
+- **模型**：GLM-5.3-Flash
+- **提示词内容**：
+
+> 提交到 github / 给我发布网址 / 就要测试11.4实现的Github发布链接网址给我
+> `https://echo-715114.github.io/xingfeiyang/测试11.4/测试11.4实现/index.html` 报错，应该改成啥
+> ghpc_****（GitHub 私人令牌，已脱敏）
+> `https://github.com/Echo-715114/xingfeiyang/settings/pages`
+
+- **说明**：文件移位导致旧在线链接 404。排查确认部署工具 upload-pages-artifact 会静默丢弃 webproject 子目录，工作流切换为 gh-pages 分支模式（组装 _site 直接推 gh-pages 分支）；令牌 scope 不足无法调 API，改用浏览器接管，由用户登录 GitHub 后自动完成 Pages source 切换（Deploy from a branch → gh-pages → root）。最终全部 10 个页面在线验证 200。
+
+---
